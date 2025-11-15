@@ -13,6 +13,7 @@
             <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
             <a href="{{ route('catalog') }}">КАТАЛОГ</a>
         </nav>
+
         <div class="header-logo">
             <a href="{{ route('main') }}"><img src="{{ asset('img/logo.png') }}" width="231" height="100px" alt="logo"></a>
         </div>
@@ -20,13 +21,29 @@
         <nav class="nav-link">
             <a href="{{ route('delivery') }}">ДОСТАВКА</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-
             <a href="#"><img src="{{ asset('img/bag.png') }}" class="bag"></a>
-            <a href="#"><img src="{{ asset('img/profile.png') }}" class="bag"></a>
 
+            <!-- Выпадающее меню профиля -->
+            <div class="profile-dropdown">
+                <img src="{{ asset('img/profile.png') }}" class="bag profile-icon" alt="profile">
+
+                <div class="dropdown-content">
+                    @guest
+                        <a href="{{ route('login') }}">Войти</a>
+                        <a href="{{ route('register') }}">Зарегистрироваться</a>
+                    @else
+                        <a href="{{ route('profile') }}">Профиль</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="logout-link">Выйти</button>
+                        </form>
+                    @endguest
+                </div>
+            </div>
         </nav>
     </div>
 </header>
+
 <main class="main">
     <div class="container">
         <h1 class="main_title">Цветы и декор в
@@ -144,5 +161,59 @@
     </div>
 </footer>
 
+<script>
+    const loginModal = document.getElementById('loginModal');
+    const registerModal = document.getElementById('registerModal');
+    const profileBtn = document.querySelector('.profile-btn'); // иконка профиля
+
+    // закрытия
+    const closeButtons = document.querySelectorAll('.close');
+
+    // открыть окно входа
+    profileBtn.onclick = function() {
+        loginModal.style.display = 'flex';
+    };
+
+    // закрыть все модалки по крестику
+    closeButtons.forEach(btn => {
+        btn.onclick = function() {
+            loginModal.style.display = 'none';
+            registerModal.style.display = 'none';
+        };
+    });
+
+    // закрыть при клике вне модалки
+    window.onclick = function(event) {
+        if (event.target === loginModal || event.target === registerModal) {
+            loginModal.style.display = 'none';
+            registerModal.style.display = 'none';
+        }
+    };
+
+    // переключение между модалками
+    const openLogin = document.getElementById('openLogin');
+    const openRegister = document.querySelector('#loginModal .modal-link');
+
+    if (openLogin) {
+        openLogin.onclick = function(e) {
+            e.preventDefault();
+            registerModal.style.display = 'none';
+            loginModal.style.display = 'flex';
+        };
+    }
+
+    if (openRegister) {
+        openRegister.onclick = function(e) {
+            e.preventDefault();
+            loginModal.style.display = 'none';
+            registerModal.style.display = 'flex';
+        };
+    }
+</script>
+
+
+
 </body>
+
+
 </html>
