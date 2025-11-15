@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLOSS</title>
     <link rel="stylesheet" href="{{ asset('css/masterclass.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
 <header>
@@ -13,17 +14,36 @@
             <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
             <a href="{{ route('catalog') }}">КАТАЛОГ</a>
         </nav>
+
         <div class="header-logo">
-            <a href="{{ route('main') }}"><img src="{{ asset('img/logo.png') }}" width="231" height="100px" alt="logo"></a>
+            <a href="{{ route('main') }}"><img src="{{ asset('img/logo.png') }}" width="231" height="100" alt="logo"></a>
         </div>
 
         <nav class="nav-link">
             <a href="{{ route('delivery') }}">ДОСТАВКА</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
+            <a href="#"><img src="{{ asset('img/bag.png') }}" class="bag" alt="bag"></a>
 
-            <a href="#"><img src="{{ asset('img/bag.png') }}" class="bag"></a>
-            <a href="#"><img src="{{ asset('img/profile.png') }}" class="bag"></a>
+            <div class="profile-dropdown">
+                <img
+                    src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('img/profile.png') }}"
+                    class="bag profile-icon"
+                    alt="profile"
+                    id="navAvatar">
 
+                <div class="dropdown-content">
+                    @guest
+                        <a href="{{ route('auth') }}">Войти</a>
+                        <a href="{{ route('register') }}">Зарегистрироваться</a>
+                    @else
+                        <a href="{{ route('profile') }}">Профиль</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="logout-link">Выйти</button>
+                        </form>
+                    @endguest
+                </div>
+            </div>
         </nav>
     </div>
 </header>

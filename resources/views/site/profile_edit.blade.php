@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет | BLOSS</title>
-
+    <title>Регистрация — BLOSS</title>
+    <link rel="stylesheet" href="{{ asset('css/profile_edit.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 </head>
 <body>
-
 <!-- HEADER -->
 <header>
     <div class="header">
@@ -51,32 +49,98 @@
     </div>
 </header>
 
+<div class="settings-container">
+    <h2 class="settings-title">Настройки профиля</h2>
 
-<main class="profile-page">
-    <section class="profile-header">
-        <div class="avatar-wrapper">
+    @if(session('success_info'))
+        <p class="success-message">{{ session('success_info') }}</p>
+    @endif
+
+    <!-- Блок аватарки -->
+    <div class="settings-block">
+        <h3>Аватар</h3>
+        <div class="avatar-preview-wrapper">
             <img
+                id="avatarPreview"
                 src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('img/profile.png') }}"
-                class="bag profile-icon"
-                alt="profile"
-                id="navAvatar">
-
+                alt="Аватар пользователя"
+                class="avatar-preview">
         </div>
-        <div class="profile-info">
-            <h1>{{ Auth::user()->name ?? 'Имя пользователя' }}</h1>
-            <p>{{ Auth::user()->email ?? 'email@example.com' }}</p>
-        </div>
-    </section>
 
-    <section class="profile-actions">
-        <a href="{{ route('profile.edit') }}" class="btn edit-btn">Редактировать профиль</a>
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ route('profile.avatar') }}" enctype="multipart/form-data">
             @csrf
-            <button type="submit" class="btn logout-btn">Выйти</button>
+            <div class="settings-row">
+                <label class="settings-label">Выберите файл</label>
+                <input type="file" name="avatar" class="settings-input" accept="image/*" id="avatarInput">
+                @error('avatar') <p class="error">{{ $message }}</p> @enderror
+            </div>
+            <button type="submit" class="save-btn">Загрузить аватар</button>
         </form>
-    </section>
+    </div>
 
-</main>
+    <!-- Блок личной информации -->
+    <div class="settings-block">
+        <h3>Личная информация</h3>
+        <form method="POST" action="{{ route('profile.update') }}">
+            @csrf
+            <div class="settings-row">
+                <label class="settings-label">Имя</label>
+                <input type="text" name="name" class="settings-input" value="{{ $user->name }}" required>
+                @error('name') <p class="error">{{ $message }}</p> @enderror
+            </div>
+            <div class="settings-row">
+                <label class="settings-label">Email</label>
+                <input type="email" name="email" class="settings-input" value="{{ $user->email }}" required>
+                @error('email') <p class="error">{{ $message }}</p> @enderror
+            </div>
+            <button type="submit" name="update_info" class="save-btn">Сохранить изменения</button>
+        </form>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Блок смены пароля -->
+    @if(session('success_password'))
+        <p class="success-message">{{ session('success_password') }}</p>
+    @endif
+    <div class="settings-block">
+        <h3>Смена пароля</h3>
+        <form method="POST" action="{{ route('profile.update') }}">
+            @csrf
+            <div class="settings-row">
+                <label class="settings-label">Новый пароль</label>
+                <input type="password" name="password" class="settings-input" required>
+                @error('password') <p class="error">{{ $message }}</p> @enderror
+            </div>
+            <div class="settings-row">
+                <label class="settings-label">Подтверждение пароля</label>
+                <input type="password" name="password_confirmation" class="settings-input" required>
+            </div>
+            <button type="submit" name="update_password" class="save-btn">Обновить пароль</button>
+        </form>
+    </div>
+
+    <!-- Блок удаления аккаунта -->
+    <div class="settings-block">
+        <h3>Удаление аккаунта</h3>
+        <p class="warning-text">
+            Ваш аккаунт и все связанные данные будут удалены навсегда.
+            Это действие <b>не может быть отменено</b>.
+        </p>
+        <form method="POST" action="{{ route('profile.delete') }}">
+            @csrf
+            @method('DELETE')
+            <div class="settings-row">
+                <label class="settings-label">Введите пароль для подтверждения</label>
+                <input type="password" name="password" class="settings-input" placeholder="Ваш пароль" required>
+                @error('password') <p class="error">{{ $message }}</p> @enderror
+            </div>
+            <button type="submit" class="save-btn delete-btn">Удалить аккаунт</button>
+        </form>
+    </div>
+
+    <a href="{{ route('profile') }}" class="back-link">Назад в профиль</a>
+</div>
 
 <footer class="container7">
     <div class="container8">
@@ -125,5 +189,8 @@
         </div>
     </div>
 </footer>
+
+<script src="{{ asset('js/avatar.js') }}"></script>
+
 </body>
 </html>

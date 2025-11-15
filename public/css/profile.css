@@ -74,7 +74,6 @@ html {
     color: #666;
 }
 
-/* Кнопки действий */
 .profile-actions {
     display: flex;
     justify-content: center;
@@ -91,6 +90,7 @@ html {
     font-size: 20px;
     cursor: pointer;
     transition: background 0.3s ease;
+    text-decoration: none;
 }
 
 .btn:hover {
@@ -105,7 +105,6 @@ html {
     background-color: #333;
 }
 
-/* Раздел заказов */
 .orders-section {
     text-align: center;
 }

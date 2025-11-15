@@ -1,0 +1,149 @@
+
+.settings-container {
+    max-width: 700px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+/* Заголовок */
+.settings-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #DD4F69;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Блоки настроек */
+.settings-block {
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+/* Описание блока */
+.settings-block h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Поля */
+.settings-row {
+    margin-bottom: 18px;
+}
+
+/* Подписи */
+.settings-label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Инпуты */
+.settings-input {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #fafafa;
+    transition: .3s;
+}
+
+.settings-input:focus {
+    border-color: #DD4F69;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(221,79,105,0.25);
+    outline: none;
+}
+
+/* Ошибки */
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+/* Кнопка сохранить */
+.save-btn {
+    width: 100%;
+    padding: 14px;
+    background: #DD4F69;
+    border-radius: 18px;
+    border: none;
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: .3s;
+}
+
+.save-btn:hover {
+    background: #c4475c;
+}
+
+/* Назад */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    color: #DD4F69;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.auth-container {
+    max-width: 450px;
+    margin: 40px auto;
+}
+
+.divider {
+    margin: 30px 0;
+    border: none;
+    height: 1px;
+    background: #eaeaea;
+}
+
+.success-message {
+    color: #1bb31b;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.save-btn.delete {
+    background: #c83838;
+}
+
+.save-btn.delete:hover {
+    background: #a72d2d;
+}
+
+.avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.settings-input[type="file"] {
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+
