@@ -26,10 +26,10 @@
 
             <div class="profile-dropdown">
                 <img
-                    src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('img/profile.png') }}"
+                    src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
                     class="bag profile-icon"
-                    alt="profile"
-                    id="navAvatar">
+                    alt="profile">
+
 
                 <div class="dropdown-content">
                     @guest
