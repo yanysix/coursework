@@ -4,33 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLOSS</title>
-    <link rel="stylesheet" href="{{ asset('css/delivery.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/flower.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
+
 <header>
     <div class="header">
         <nav class="nav-link">
             <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
-            <a href="{{ route('catalog') }}">КАТАЛОГ</a>
+            <a href="{{ route('flower') }}">ЦВЕТЫ</a>
         </nav>
 
         <div class="header-logo">
-            <a href="{{ route('main') }}"><img src="{{ asset('img/logo.png') }}" width="231" height="100" alt="logo"></a>
+            <a href="{{ route('main') }}">
+                <img src="{{ asset('img/logo.png') }}" width="231" height="100" alt="logo">
+            </a>
         </div>
 
         <nav class="nav-link">
-            <a href="{{ route('delivery') }}">ДОСТАВКА</a>
+            <a href="{{ route('packaging') }}">УПАКОВКИ</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-            <a href="#"><img src="{{ asset('img/bag.png') }}" class="bag" alt="bag"></a>
+            <a href="{{ route('basket') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
             <div class="profile-dropdown">
-                <img
-                    src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
-                    class="bag profile-icon"
-                    alt="profile">
-
-
+                <img src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
+                     class="bag profile-icon" alt="profile">
                 <div class="dropdown-content">
                     @guest
                         <a href="{{ route('auth') }}">Войти</a>
@@ -47,36 +46,31 @@
         </nav>
     </div>
 </header>
-<main class="main">
-    <div class="content">
-        <h1>Доставка</h1>
-        <div class="contact-detail">
-            <div class="block">
-                <p>Стандартная<br><br>
-                    Букет будет доставлен в доступный трехчасовой интервал (500 рублей) или двухчасовой интервал<br>
-                    (600 рублей) после согласования и оплаты
-                </p>
-            </div>
-            <img loading="lazy" src="{{ asset('img/flower.png') }}" class="flower" alt="BLOSS flower"/>
-            <div class="block">
-                <p>
-                    Экспресс<br><br>
-                    Букет будет доставлен за 60 - 90 минут после согласования и оплаты - 1400 рублей
-                </p>
-            </div>
-        </div>
-        <div class="block-flower">
-            <p class="text-flower">С вами на связи с 9.00 до 22.00<br>Доставка осуществляется с 9.00 до 22.00</p>
-            <p class="text-flower">Доставку выполняем в день заказа, либо к определенной дате<br> по предварительному
-                согласованию.<br>
-                Для бережной транспортировки мы упаковываем букеты в брендированные<br> коробки, прикладываем инструкцию
-                по уходу и смесь для подкормки цветов.<br>
-                Доставку доверяем только курьерам, проверенным на пунктуальность,<br> тактичность и аккуратность.</p>
-            <p class="text-flower-main">Цветут цветы - Цвети и ты!</p>
-        </div>
 
-    </div>
+<main class="main1">
+    <section class="flowers-section">
+        <h2>Наши цветы</h2>
+        <div class="gallery-grid">
+            @forelse($flowers as $flower)
+                <div class="card-item">
+                    @if($flower->image)
+                        <img src="{{ asset('storage/' . $flower->image) }}" alt="{{ $flower->name }}" class="flower-image">
+                    @else
+                        <img src="{{ asset('img/placeholder.png') }}" alt="Нет изображения" class="flower-image">
+                    @endif
+                    <h3>{{ $flower->name }}</h3>
+                    @if($flower->price)
+                        <p class="price">Цена: {{ $flower->price }} ₽</p>
+                    @endif
+                    <button class="cta-button">Добавить в корзину</button>
+                </div>
+            @empty
+                <p>Цветов пока нет.</p>
+            @endforelse
+        </div>
+    </section>
 </main>
+
 <footer class="container7">
     <div class="container8">
         <div class="logo-contact-column">
@@ -112,11 +106,8 @@
                             Не знаете что заказать? Закажите звонок!<br/>
                             Мы поможем Вам с выбором
                         </p>
-                        <label for="phone" class="visually-hidden"></label>
-                        <input type="tel" id="phone" class="form-input" placeholder="Ваш телефон"
-                               aria-label="Ваш телефон"/>
-                        <label for="name" class="visually-hidden"></label>
-                        <input type="text" id="name" class="form-input" placeholder="Ваше имя" aria-label="Ваше имя"/>
+                        <input type="tel" class="form-input" placeholder="Ваш телефон"/>
+                        <input type="text" class="form-input" placeholder="Ваше имя"/>
                         <button type="submit" class="button1">Оставить заявку</button>
                     </form>
                 </div>

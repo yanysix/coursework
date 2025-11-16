@@ -4,38 +4,88 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FlowerController;
+use App\Http\Controllers\PackagingController;
+use App\Http\Controllers\CardController;
 
-// Публичные страницы
+
+/*
+|--------------------------------------------------------------------------
+| Публичные страницы
+|--------------------------------------------------------------------------
+*/
 Route::view('/', 'welcome');
 Route::view('/main', 'site.main')->name('main');
 Route::view('/decoration', 'site.decoration')->name('decoration');
-Route::view('/delivery', 'site.delivery')->name('delivery');
+Route::view('/packaging', 'site.packaging')->name('packaging');
 Route::view('/masterclass', 'site.masterclass')->name('masterclass');
-Route::view('/catalog', 'site.catalog')->name('catalog');
-Route::view('/profile', 'site.profile')->name('profile');
+Route::view('/flower', 'site.flower')->name('flower');
 
-// Регистрация
+/*
+|--------------------------------------------------------------------------
+| Профиль пользователя
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::view('/profile', 'site.profile')->name('profile');
+
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/profile/password', [ProfileController::class, 'editPassword'])->name('profile.edit.password');
+    Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
+
+    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
+    Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Регистрация и авторизация
+|--------------------------------------------------------------------------
+*/
 Route::get('/register', fn() => view('site.register'))->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
-// Авторизация
-Route::get('/auth', fn() => view('site.auth'))->name('auth');
+Route::get('/auth', fn() => view('site.auth'))->name('auth')->middleware('guest');
+
 Route::post('/auth', [AuthController::class, 'login'])->name('auth.login');
 
-// Выход
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Личная информация
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+/*
+|--------------------------------------------------------------------------
+| Админ-панель
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [FlowerController::class, 'admin'])->name('flowers.admin');
+    // CRUD для цветов
+    Route::resource('flowers', FlowerController::class);
 
-// Пароль
-Route::get('/profile/password', [ProfileController::class, 'editPassword'])->name('profile.edit.password');
-Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
+    // CRUD для упаковки
+    Route::resource('packaging', PackagingController::class);
+});
 
-Route::delete('/profile/delete', [ProfileController::class, 'delete'])
-    ->name('profile.delete')
-    ->middleware('auth');
-Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar')->middleware('auth');
+// Маршрут для кастомной обертки
+Route::post('/admin/packaging/custom', [PackagingController::class, 'storeCustom'])->name('packaging.custom');
+
+Route::get('/cards', function () {
+    return view('site.cards'); // путь к шаблону, который мы создали
+})->name('cards');
+
+Route::get('/cards', [CardController::class, 'index'])->name('cards.index');
+Route::post('/cards/create-pdf', [CardController::class, 'createPdf'])->name('cards.createPdf');
+Route::get('/cards/download/{token}', [CardController::class, 'download'])->name('cards.download');
 
 
+Route::get('/flower', [FlowerController::class, 'index'])->name('flower');
+
+
+Route::get('/cart', function () {
+    // Пока передаём пустые данные, позже добавим логику корзины
+    $cartItems = collect();
+    $total = 0;
+
+    return view('site.basket', compact('cartItems', 'total'));
+})->name('basket');

@@ -10,8 +10,10 @@ return new class extends Migration {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('message')->nullable();
+            $table->text('message');
             $table->foreignId('fk_user_id')->constrained('users')->onDelete('cascade');
+            $table->text('path');
+            $table->text('public_token');
             $table->timestamps();
         });
     }

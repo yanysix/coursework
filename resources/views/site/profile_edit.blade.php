@@ -13,7 +13,7 @@
     <div class="header">
         <nav class="nav-link">
             <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
-            <a href="{{ route('catalog') }}">КАТАЛОГ</a>
+            <a href="{{ route('flower') }}">ЦВЕТЫ</a>
         </nav>
 
         <div class="header-logo">
@@ -21,9 +21,9 @@
         </div>
 
         <nav class="nav-link">
-            <a href="{{ route('delivery') }}">ДОСТАВКА</a>
+            <a href="{{ route('packaging') }}">УПАКОВКИ</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-            <a href="#"><img src="{{ asset('img/bag.png') }}" class="bag" alt="bag"></a>
+            <a href="{{ route('basket') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
             <div class="profile-dropdown">
                 <img

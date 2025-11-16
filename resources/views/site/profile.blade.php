@@ -9,23 +9,22 @@
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 </head>
 <body>
-
 <!-- HEADER -->
 <header>
-    <div class="header">
-        <nav class="nav-link">
-            <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
-            <a href="{{ route('catalog') }}">КАТАЛОГ</a>
-        </nav>
+<div class="header">
+    <nav class="nav-link">
+        <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
+        <a href="{{ route('flower') }}">ЦВЕТЫ</a>
+    </nav>
 
-        <div class="header-logo">
-            <a href="{{ route('main') }}"><img src="{{ asset('img/logo.png') }}" width="231" height="100" alt="logo"></a>
-        </div>
+    <div class="header-logo">
+        <a href="{{ route('main') }}"><img src="{{ asset('img/logo.png') }}" width="231" height="100" alt="logo"></a>
+    </div>
 
-        <nav class="nav-link">
-            <a href="{{ route('delivery') }}">ДОСТАВКА</a>
-            <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-            <a href="#"><img src="{{ asset('img/bag.png') }}" class="bag" alt="bag"></a>
+    <nav class="nav-link">
+        <a href="{{ route('packaging') }}">УПАКОВКИ</a>
+        <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
+        <a href="{{ route('basket') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
             <div class="profile-dropdown">
                 <img

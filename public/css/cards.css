@@ -1,0 +1,232 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', serif;
+}
+
+body {
+    background-color: #fff;
+}
+
+.main1 {
+    background-color: #FFF5F5;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px 20px 50px 20px;
+}
+
+.hero-packaging {
+    max-width: 1200px;
+    margin: 50px auto;
+    text-align: center;
+    background: #f4d4df;
+    padding: 80px 40px;
+    border-radius: 40px;
+}
+
+.hero-packaging h1 {
+    font-size: 54px;
+    font-weight: 300;
+    color: #dd4f69;
+    margin-bottom: 20px;
+}
+
+.hero-packaging p {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    background: #dd4f69;
+    border: none;
+    padding: 16px 50px;
+    font-size: 20px;
+    border-radius: 40px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cta-button:hover {
+    background: #c53e58;
+}
+
+.custom-packaging-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    max-width: 90%;
+    background: #ffffff;
+    border-radius: 30px;
+    padding: 50px 40px;
+    border: 2px solid #f4d4df;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s ease;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+}
+
+.custom-packaging-form.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.custom-packaging-form h2 {
+    font-size: 40px;
+    color: #dd4f69;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.custom-packaging-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.custom-packaging-form label {
+    font-size: 22px;
+    font-weight: 300;
+}
+
+.custom-packaging-form input[type="text"],
+.custom-packaging-form input[type="file"],
+.custom-packaging-form textarea,
+.form-input {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 14px 18px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.custom-packaging-form input:hover,
+.custom-packaging-form textarea:hover,
+.file-input:hover {
+    border-color: #dd4f69;
+}
+
+.file-input {
+    padding: 14px;
+    background: #fafafa;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.submit-btn {
+    margin-top: 10px;
+    align-self: center;
+    width: 350px;
+}
+
+.my-cards {
+    max-width: 1200px;
+    margin: 60px auto;
+    text-align: center;
+}
+
+.my-cards h2 {
+    font-size: 42px;
+    color: #dd4f69;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    border-radius: 30px;
+}
+
+.card-item {
+    background: linear-gradient(145deg, #ffe6f0, #fcdce3);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.card-item::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    border-radius: 25px;
+    border: 2px dashed #ffb6c1;
+    pointer-events: none;
+}
+
+.card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-item h3 {
+    font-size: 28px;
+    color: #dd4f69;
+    margin-bottom: 15px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.card-item p,
+.card-item .created-at {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.card-item .created-at {
+    font-size: 14px;
+    color: #999;
+    margin-top: 10px;
+}
+
+.card-item .cta-button {
+    padding: 12px 28px;
+    font-size: 18px;
+    border-radius: 30px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.card-item .cta-button:hover {
+    background: #c53e58;
+}
+
+.close-form {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #dd4f69;
+    transition: 0.3s;
+}
+
+.close-form:hover {
+    color: #c53e58;
+}

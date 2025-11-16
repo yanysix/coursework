@@ -16,7 +16,15 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+
             $request->session()->regenerate();
+
+            // Админ
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.flowers.index');
+            }
+
+            // Обычный пользователь
             return redirect()->route('main');
         }
 
@@ -25,11 +33,14 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
+
+
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('main');
     }
 }

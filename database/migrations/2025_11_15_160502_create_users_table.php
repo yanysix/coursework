@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('password');
             $table->text('avatar')->nullable();
+            $table->enum('role', ['admin', 'user'])->default('user'); // ← добавлено
             $table->timestamps();
         });
     }

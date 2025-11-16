@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLOSS</title>
     <link rel="stylesheet" href="{{ asset('css/decoration.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
 <header>
     <div class="header">
         <nav class="nav-link">
             <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
-            <a href="{{ route('catalog') }}">КАТАЛОГ</a>
+            <a href="{{ route('flower') }}">ЦВЕТЫ</a>
         </nav>
 
         <div class="header-logo">
@@ -20,17 +19,15 @@
         </div>
 
         <nav class="nav-link">
-            <a href="{{ route('delivery') }}">ДОСТАВКА</a>
+            <a href="{{ route('packaging') }}">УПАКОВКИ</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-            <a href="#"><img src="{{ asset('img/bag.png') }}" class="bag" alt="bag"></a>
+            <a href="{{ route('basket') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
             <div class="profile-dropdown">
                 <img
-                    src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
-                    class="bag profile-icon"
-                    alt="profile">
-
-
+                        src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
+                        class="bag profile-icon"
+                        alt="profile">
                 <div class="dropdown-content">
                     @guest
                         <a href="{{ route('auth') }}">Войти</a>
@@ -44,6 +41,7 @@
                     @endguest
                 </div>
             </div>
+
         </nav>
     </div>
 </header>
@@ -123,12 +121,12 @@
     <div class="contact-form-wrapper">
         <div class="contact-form-content">
             <p class="contact-text">
-                Будем рады обсудить Ваш проект
+                Хотите создать свою собственную открытку?<br/>
+                Мы поможем вам подобрать красивый стиль и уникальный дизайн!
                 <br><br>
-                Оставьте свои контактные данные, и мы свяжемся с Вами
-                в ближайшее время
+                Нажмите на кнопку ниже, чтобы узнать подробнее!
             </p>
-            <button class="cta-button">Оставить заявку</button>
+            <a href="{{ route('cards.index') }}" class="cta-button">Подробнее</a>
         </div>
     </div>
 </main>

@@ -1,0 +1,245 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', serif;
+}
+
+.hero-packaging {
+    width: 1660px;
+    margin: 50px auto;
+    text-align: center;
+    background: #f4d4df;
+    padding: 80px 40px;
+    border-radius: 40px;
+    margin-left: 40px;
+}
+
+.hero-packaging h1 {
+    font-size: 54px;
+    font-weight: 300;
+    color: #dd4f69;
+    margin-bottom: 20px;
+}
+
+.hero-packaging p {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    background: #dd4f69;
+    border: none;
+    padding: 16px 50px;
+    font-size: 20px;
+    border-radius: 40px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cta-button:hover {
+    background: #c53e58;
+}
+
+.packaging-gallery {
+    width: 1660px;
+    margin: 60px auto;
+}
+
+.packaging-gallery h2 {
+    font-size: 42px;
+    text-align: center;
+    color: #dd4f69;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
+
+.gallery-grid {
+    background: #fff;
+    padding: 70px;
+    border-radius: 30px;
+    text-align: center;
+    font-size: 24px;
+    color: #777;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.custom-packaging-form {
+    width: 1660px;
+    margin: 60px auto;
+    background: #ffffff;
+    border-radius: 30px;
+    padding: 50px 80px;
+    border: 2px solid #f4d4df;
+}
+
+.custom-packaging-form h2 {
+    font-size: 40px;
+    color: #dd4f69;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.custom-packaging-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.custom-packaging-form label {
+    font-size: 22px;
+    font-weight: 300;
+}
+
+.custom-packaging-form input[type="text"],
+.custom-packaging-form input[type="file"] {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 14px 18px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.custom-packaging-form input:hover {
+    border-color: #dd4f69;
+}
+
+.file-input {
+    padding: 14px;
+    background: #fafafa;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.file-input:hover {
+    border-color: #dd4f69;
+}
+
+.submit-btn {
+    margin-top: 10px;
+    align-self: center;
+    width: 350px;
+}
+
+.container7 {
+    margin-top: 150px;
+    background-color: #f4d4df;
+    padding: 60px;
+}
+
+.container8 {
+    max-width: 1800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo-contact-column {
+    width: 40%;
+}
+
+.logo-contact-wrapper {
+    display: flex;
+}
+
+.logo {
+    width: 200px;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.brand-name {
+    color: #dd4f69;
+    font-size: 46px;
+    font-weight: 300;
+}
+
+.contact-details {
+    color: white;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.navigation-form-column {
+    width: 60%;
+}
+
+.nav-links {
+    color: white;
+    font-size: 22px;
+    font-weight: 200;
+    line-height: 34px;
+}
+
+.form-wrapper {
+    margin-top: 20px;
+}
+
+.form-input {
+    font-size: 18px;
+    padding: 14px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: none;
+}
+
+.button1 {
+    background: #dd4f69;
+    border: none;
+    padding: 14px;
+    color: white;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.button1:hover {
+    background: #c24059;
+}
+
+.custom-packaging-form {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1660px;
+    background: #ffffff;
+    border-radius: 30px;
+    padding: 50px 80px;
+    border: 2px solid #f4d4df;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s ease;
+}
+
+.custom-packaging-form.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.main {
+    position: relative;
+}
+
+.packaging-gallery {
+    position: relative;
+    z-index: 1;
+}
