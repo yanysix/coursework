@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLOSS</title>
     <link rel="stylesheet" href="{{ asset('css/decoration.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
 <header>
@@ -15,19 +16,19 @@
         </nav>
 
         <div class="header-logo">
-            <a href="{{ route('main') }}"><img src="{{ asset('img/logo.png') }}" width="231" height="100" alt="logo"></a>
+            <a href="{{ route('main') }}">
+                <img src="{{ asset('img/logo.png') }}" width="231" height="100" alt="logo">
+            </a>
         </div>
 
         <nav class="nav-link">
             <a href="{{ route('packaging') }}">УПАКОВКИ</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-            <a href="{{ route('basket') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
+            <a href="{{ route('cart') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
             <div class="profile-dropdown">
-                <img
-                        src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
-                        class="bag profile-icon"
-                        alt="profile">
+                <img src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
+                     class="bag profile-icon" alt="profile">
                 <div class="dropdown-content">
                     @guest
                         <a href="{{ route('auth') }}">Войти</a>

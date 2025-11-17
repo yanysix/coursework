@@ -82,3 +82,115 @@
     object-fit: cover;
     border-radius: 15px;
 }
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.filter-form input[type="text"],
+.filter-form input[type="number"] {
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid #dd4f69;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+    width: 200px;
+}
+
+.filter-form input[type="text"]:focus,
+.filter-form input[type="number"]:focus {
+    border-color: #c53e58;
+    box-shadow: 0 0 5px rgba(221, 79, 105, 0.5);
+}
+
+.filter-form button,
+.filter-form .reset-button {
+    padding: 10px 25px;
+    border-radius: 30px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter-form button {
+    background-color: #dd4f69;
+    color: white;
+}
+
+.filter-form button:hover {
+    background-color: #c53e58;
+}
+
+.filter-form .reset-button {
+    background-color: #fff;
+    color: #dd4f69;
+    border: 2px solid #dd4f69;
+    text-decoration: none;
+    line-height: 36px;
+    display: inline-block;
+}
+
+.filter-form .reset-button:hover {
+    background-color: #dd4f69;
+    color: #fff;
+    text-decoration: none;
+}
+
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #dd4f69; /* основной цвет */
+    color: #fff;
+    padding: 15px 25px 15px 50px;
+    border-radius: 15px;
+    font-size: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    z-index: 9999;
+    animation: slidein 0.5s, fadeout 4s 2.5s forwards;
+    max-width: 350px;
+    position: fixed;
+    right: 20px;
+}
+
+.flash-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.flash-text {
+    flex-grow: 1;
+}
+
+.flash-close {
+    cursor: pointer;
+    margin-left: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@keyframes slidein {
+    0% {
+        transform: translateX(100%); opacity: 0;
+    }
+    100% {
+        transform: translateX(0); opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

@@ -21,7 +21,7 @@ class AuthController extends Controller
 
             // Админ
             if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.flowers.index');
+                return redirect()->route('admin.flowers.admin');
             }
 
             // Обычный пользователь

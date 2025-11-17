@@ -7,17 +7,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('bouquet', function (Blueprint $table) {
+        Schema::create('cart', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->foreignId('fk_user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('fk_packing_id')->constrained('packaging')->onDelete('cascade');
+            $table->decimal('total_amount', 8, 2)->default(0);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('bouquet');
+        Schema::dropIfExists('cart');
     }
 };

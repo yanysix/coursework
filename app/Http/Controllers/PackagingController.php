@@ -4,83 +4,134 @@ namespace App\Http\Controllers;
 
 use App\Models\Packaging;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PackagingController extends Controller
 {
-    // Список упаковок
-    public function index()
+    /**
+     * Список всех упаковок
+     */
+    public function admin()
     {
         $packagings = Packaging::all();
         return view('adminpanel.admin_packaging', compact('packagings'));
     }
 
-    // Форма создания
-    public function create()
+    public function index()
     {
-        return view('admin.packaging.create');
+        $packagings = Packaging::all();
+        return view('site.packaging', compact('packagings'));
     }
 
-    // Сохранение новой упаковки
+    /**
+     * Сохранение новой упаковки (обычная форма или модалка)
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'  => 'required|string|max:255',
             'price' => 'nullable|numeric',
+            'image' => 'nullable|image|max:2048',
+            'description' => 'nullable|string|max:1000',
         ]);
 
-        Packaging::create($request->all());
+        $data = $request->only(['name', 'price', 'description']);
 
-        return redirect()->route('admin.packaging.index')->with('success', 'Упаковка успешно добавлена!');
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('packaging', 'public');
+        }
+
+        $packaging = Packaging::create($data);
+
+        // Если AJAX — возвращаем JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'packaging' => [
+                    'id'    => $packaging->id,
+                    'name'  => $packaging->name,
+                    'price' => $packaging->price,
+                    'description' => $packaging->description,
+                    'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
+                ]
+            ]);
+        }
+
+        return redirect()->route('admin.packaging.admin')
+            ->with('success', 'Упаковка успешно добавлена!');
     }
 
-    // Форма редактирования
+    /**
+     * Получение данных упаковки для редактирования (AJAX)
+     */
     public function edit(Packaging $packaging)
     {
+        if (request()->ajax()) {
+            return response()->json([
+                'id'    => $packaging->id,
+                'name'  => $packaging->name,
+                'price' => $packaging->price,
+                'description' => $packaging->description,
+                'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
+            ]);
+        }
+
         return view('admin.packaging.edit', compact('packaging'));
     }
 
-    // Обновление
+    /**
+     * Обновление упаковки
+     */
     public function update(Request $request, Packaging $packaging)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'  => 'required|string|max:255',
             'price' => 'nullable|numeric',
-        ]);
-
-        $packaging->update($request->all());
-
-        return redirect()->route('admin.packaging.index')->with('success', 'Упаковка успешно обновлена!');
-    }
-
-    // Удаление
-    public function destroy(Packaging $packaging)
-    {
-        $packaging->delete();
-        return redirect()->route('admin.packaging.index')->with('success', 'Упаковка удалена!');
-    }
-
-    // Метод для кастомной обертки
-    public function storeCustom(Request $request)
-    {
-        // Валидация данных
-        $request->validate([
-            'material' => 'required|string|max:255',
-            'color' => 'required|string|max:255',
-            'decor' => 'nullable|string|max:255',
             'image' => 'nullable|image|max:2048',
+            'description' => 'nullable|string|max:1000',
         ]);
 
-        $packaging = new Packaging();
-        $packaging->name = 'Кастомная обертка';
-        $packaging->description = 'Материал: '.$request->material.', Цвет: '.$request->color.($request->decor ? ', Декор: '.$request->decor : '');
+        $data = $request->only(['name', 'price', 'description']);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('packaging', 'public');
-            $packaging->image = $path;
+            // Удаляем старое изображение
+            if ($packaging->image) {
+                Storage::disk('public')->delete($packaging->image);
+            }
+            $data['image'] = $request->file('image')->store('packaging', 'public');
         }
 
-        $packaging->save();
+        $packaging->update($data);
 
-        return redirect()->back()->with('success', 'Ваша кастомная обертка отправлена!');
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'packaging' => [
+                    'id'    => $packaging->id,
+                    'name'  => $packaging->name,
+                    'price' => $packaging->price,
+                    'description' => $packaging->description,
+                    'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
+                ]
+            ]);
+        }
+
+        return redirect()->route('admin.packaging.admin')
+            ->with('success', 'Упаковка успешно обновлена!');
+    }
+
+    /**
+     * Удаление упаковки
+     */
+    public function destroy(Packaging $packaging)
+    {
+        if ($packaging->image) {
+            Storage::disk('public')->delete($packaging->image);
+        }
+
+        $packaging->delete();
+
+        return redirect()->route('admin.packaging.admin')
+            ->with('success', 'Упаковка удалена!');
     }
 }

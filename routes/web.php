@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FlowerController;
 use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\FlowerCartController;
 
 
 /*
@@ -63,6 +65,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // CRUD для цветов
     Route::resource('flowers', FlowerController::class);
 
+    Route::get('/packagings', [PackagingController::class, 'admin'])->name('packaging.admin');
     // CRUD для упаковки
     Route::resource('packaging', PackagingController::class);
 });
@@ -80,12 +83,13 @@ Route::get('/cards/download/{token}', [CardController::class, 'download'])->name
 
 
 Route::get('/flower', [FlowerController::class, 'index'])->name('flower');
+Route::get('/packaging', [PackagingController::class, 'index'])->name('packaging');
 
 
-Route::get('/cart', function () {
-    // Пока передаём пустые данные, позже добавим логику корзины
-    $cartItems = collect();
-    $total = 0;
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart');
+    Route::post('/flower/add', [CartController::class, 'addFlower'])->name('cart.flower.add');
+    Route::post('/packaging/add', [CartController::class, 'addPackaging'])->name('cart.packaging.add');
+    Route::delete('/remove/{type}/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
+});
 
-    return view('site.basket', compact('cartItems', 'total'));
-})->name('basket');

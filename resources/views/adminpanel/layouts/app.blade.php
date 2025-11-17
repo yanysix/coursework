@@ -16,7 +16,7 @@
         <nav class="admin-nav">
             <ul>
                 <li><a href="{{ route('admin.flowers.admin') }}">Цветы</a></li>
-                <li><a href="{{ route('admin.packaging.index') }}">Упаковка</a></li>
+                <li><a href="{{ route('admin.packaging.admin') }}">Упаковка</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

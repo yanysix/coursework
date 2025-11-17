@@ -23,7 +23,7 @@
         <nav class="nav-link">
             <a href="{{ route('packaging') }}">УПАКОВКИ</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-            <a href="{{ route('basket') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
+            <a href="{{ route('cart') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
             <div class="profile-dropdown">
                 <img src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
                      class="profile-icon" alt="profile">

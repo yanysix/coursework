@@ -22,4 +22,3 @@ class Card extends Model
         return $this->belongsTo(User::class, 'fk_user_id');
     }
 }
-

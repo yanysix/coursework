@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function bouquets(): HasMany
     {
-        return $this->hasMany(Bouquet::class, 'fk_user_id');
+        return $this->hasMany(Cart::class, 'fk_user_id');
     }
 
     public function cards(): HasMany

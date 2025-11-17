@@ -25,7 +25,7 @@
         <nav class="nav-link">
             <a href="{{ route('packaging') }}">УПАКОВКИ</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-            <a href="{{ route('basket') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
+            <a href="{{ route('cart') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
             <div class="profile-dropdown">
                 <img src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
@@ -50,6 +50,16 @@
 <main class="main1">
     <section class="flowers-section">
         <h2>Наши цветы</h2>
+
+        <!-- Форма поиска и фильтрации -->
+        <form method="GET" action="{{ route('flower') }}" class="filter-form">
+            <input type="text" name="search" placeholder="Поиск по названию" value="{{ request('search') }}">
+            <input type="number" name="min_price" placeholder="Мин. цена" value="{{ request('min_price') }}">
+            <input type="number" name="max_price" placeholder="Макс. цена" value="{{ request('max_price') }}">
+            <button type="submit" class="cta-button">Применить</button>
+            <a href="{{ route('flower') }}" class="cta-button reset-button">Сбросить</a>
+        </form>
+
         <div class="gallery-grid">
             @forelse($flowers as $flower)
                 <div class="card-item">
@@ -62,7 +72,12 @@
                     @if($flower->price)
                         <p class="price">Цена: {{ $flower->price }} ₽</p>
                     @endif
-                    <button class="cta-button">Добавить в корзину</button>
+                    <form method="POST" action="{{ route('cart.flower.add') }}">
+                        @csrf
+                        <input type="hidden" name="flower_id" value="{{ $flower->id }}">
+                        <input type="hidden" name="price" value="{{ $flower->price }}">
+                        <button type="submit" class="cta-button">Добавить в корзину</button>
+                    </form>
                 </div>
             @empty
                 <p>Цветов пока нет.</p>
@@ -70,6 +85,7 @@
         </div>
     </section>
 </main>
+
 
 <footer class="container7">
     <div class="container8">

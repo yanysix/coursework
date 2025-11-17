@@ -20,7 +20,7 @@ class Flower extends Model
     public function bouquets(): BelongsToMany
     {
         return $this->belongsToMany(
-            Bouquet::class,
+            Cart::class,
             'bouquet_flowers',
             'fk_flower_id',
             'fk_bouquet_id'

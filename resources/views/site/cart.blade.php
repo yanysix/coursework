@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Корзина | BLOSS</title>
-    <link rel="stylesheet" href="{{ asset('css/basket.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
 
 <header>
     <div class="header">
+        <!-- Flash сообщение -->
+        @if(session('success'))
+            <div class="flash-message">
+                <span class="flash-icon">✔</span>
+                <span class="flash-text">{{ session('success') }}</span>
+                <span class="flash-close" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div>
+        @endif
         <nav class="nav-link">
             <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
             <a href="{{ route('flower') }}">ЦВЕТЫ</a>
@@ -23,7 +31,7 @@
         <nav class="nav-link">
             <a href="{{ route('packaging') }}">УПАКОВКИ</a>
             <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
-            <a href="{{ route('basket') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
+            <a href="{{ route('cart') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
             <div class="profile-dropdown">
                 <img src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
                      class="profile-icon" alt="profile">
@@ -48,32 +56,59 @@
     <h1>Ваша корзина</h1>
 
     <div class="cart-container">
-        @forelse($cartItems as $item)
-            <div class="cart-item">
-                <img src="{{ $item->flower->image ? asset('storage/' . $item->flower->image) : asset('img/placeholder.png') }}" alt="{{ $item->flower->name }}">
-                <div class="item-info">
-                    <h3>{{ $item->flower->name }}</h3>
-                    <p class="price">Цена: {{ $item->flower->price }} ₽</p>
-                    <div class="quantity">
-                        <label>Количество:</label>
-                        <input type="number" value="{{ $item->quantity }}" min="1">
+        {{-- Цветы --}}
+        @if($cartItemsFlowers->count())
+            <h2>Цветы</h2>
+            @foreach($cartItemsFlowers as $item)
+                <div class="cart-item">
+                    <img src="{{ $item->flower->image ? asset('storage/' . $item->flower->image) : asset('img/placeholder.png') }}"
+                         alt="{{ $item->flower->name }}">
+
+                    <div class="item-info">
+                        <h3>{{ $item->flower->name }}</h3>
+                        <p class="price">Цена: {{ $item->price }} ₽</p>
                     </div>
+
+                    <form method="POST" action="{{ route('cart.remove', ['type' => 'flower', 'id' => $item->id]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="remove-btn">Удалить</button>
+                    </form>
                 </div>
-                <form method="POST" action="{{ route('cart.remove', $item->id) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button class="remove-btn">Удалить</button>
-                </form>
-            </div>
-        @empty
+            @endforeach
+        @endif
+
+        {{-- Упаковки --}}
+        @if($cartItemsPackagings->count())
+            <h2>Упаковки</h2>
+            @foreach($cartItemsPackagings as $item)
+                <div class="cart-item">
+                    <img src="{{ $item->packaging->image ? asset('storage/' . $item->packaging->image) : asset('img/placeholder.png') }}"
+                         alt="{{ $item->packaging->name }}">
+
+                    <div class="item-info">
+                        <h3>{{ $item->packaging->name }}</h3>
+                        <p class="price">Цена: {{ $item->price }} ₽</p>
+                    </div>
+
+                    <form method="POST" action="{{ route('cart.remove', ['type' => 'packaging', 'id' => $item->id]) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="remove-btn">Удалить</button>
+                    </form>
+                </div>
+            @endforeach
+        @endif
+
+        @if(!$cartItemsFlowers->count() && !$cartItemsPackagings->count())
             <p>Ваша корзина пуста.</p>
-        @endforelse
+        @endif
     </div>
 
-    @if($cartItems->count())
+    @if($total > 0)
         <div class="cart-footer">
             <p class="total">Итого: {{ $total }} ₽</p>
-            <a href="{{ route('checkout') }}" class="cta-button">Оформить заказ</a>
+            <a href="#" class="cta-button">Оформить заказ</a>
         </div>
     @endif
 </main>

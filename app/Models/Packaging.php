@@ -9,8 +9,10 @@ class Packaging extends Model
 {
     protected $table = 'packaging';
 
+    protected $fillable = ['name', 'price', 'image'];
+
     public function bouquets(): HasMany
     {
-        return $this->hasMany(Bouquet::class, 'fk_packing_id');
+        return $this->hasMany(Cart::class, 'fk_packing_id');
     }
 }

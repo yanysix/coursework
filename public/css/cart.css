@@ -98,3 +98,46 @@
 .cart-footer .cta-button:hover {
     background: #c53e58;
 }
+
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #dd4f69; /* основной цвет уведомления */
+    color: #fff;
+    padding: 15px 25px 15px 50px;
+    border-radius: 15px;
+    font-size: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    z-index: 9999;
+    animation: slidein 0.5s, fadeout 4s 2.5s forwards;
+    max-width: 350px;
+}
+
+.flash-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.flash-text {
+    flex-grow: 1;
+}
+
+.flash-close {
+    cursor: pointer;
+    margin-left: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@keyframes slidein {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeout {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
