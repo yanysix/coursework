@@ -9,6 +9,7 @@ use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FlowerCartController;
+use App\Http\Controllers\ZodiacController;
 
 
 /*
@@ -93,3 +94,6 @@ Route::prefix('cart')->group(function () {
     Route::delete('/remove/{type}/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
 });
 
+
+Route::get('/zodiac', [ZodiacController::class, 'index'])->name('zodiac.index');
+Route::post('/zodiac/select', [ZodiacController::class, 'select'])->name('zodiac.select');

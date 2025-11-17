@@ -12,7 +12,7 @@ class Flower extends Model
     protected $table = 'flowers';
 
     // Разрешенные для массового заполнения поля
-    protected $fillable = ['name', 'price', 'image'];
+    protected $fillable = ['name', 'price', 'image', 'zodiac_sign'];
 
     /**
      * Связь многие-ко-многим с букетами

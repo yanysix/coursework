@@ -32,10 +32,10 @@ class PackagingController extends Controller
             'name'  => 'required|string|max:255',
             'price' => 'nullable|numeric',
             'image' => 'nullable|image|max:2048',
-            'description' => 'nullable|string|max:1000',
+            'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
         ]);
 
-        $data = $request->only(['name', 'price', 'description']);
+        $data = $request->only(['name', 'price', 'zodiac_sign']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('packaging', 'public');
@@ -51,7 +51,7 @@ class PackagingController extends Controller
                     'id'    => $packaging->id,
                     'name'  => $packaging->name,
                     'price' => $packaging->price,
-                    'description' => $packaging->description,
+                    'zodiac_sign' => $packaging->zodiac_sign,
                     'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
                 ]
             ]);
@@ -71,7 +71,7 @@ class PackagingController extends Controller
                 'id'    => $packaging->id,
                 'name'  => $packaging->name,
                 'price' => $packaging->price,
-                'description' => $packaging->description,
+                'zodiac_sign' => $packaging->zodiac_sign,
                 'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
             ]);
         }
@@ -88,10 +88,10 @@ class PackagingController extends Controller
             'name'  => 'required|string|max:255',
             'price' => 'nullable|numeric',
             'image' => 'nullable|image|max:2048',
-            'description' => 'nullable|string|max:1000',
+            'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
         ]);
 
-        $data = $request->only(['name', 'price', 'description']);
+        $data = $request->only(['name', 'price', 'description', 'zodiac_sign']);
 
         if ($request->hasFile('image')) {
             // Удаляем старое изображение
@@ -110,7 +110,7 @@ class PackagingController extends Controller
                     'id'    => $packaging->id,
                     'name'  => $packaging->name,
                     'price' => $packaging->price,
-                    'description' => $packaging->description,
+                    'zodiac_sign' => $packaging->zodiac_sign,
                     'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
                 ]
             ]);

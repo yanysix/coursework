@@ -12,6 +12,10 @@ return new class extends Migration {
             $table->string('name');
             $table->decimal('price', 8, 2);
             $table->text('image');
+            $table->enum('zodiac_sign', [
+                'Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Дева',
+                'Весы', 'Скорпион', 'Стрелец', 'Козерог', 'Водолей', 'Рыбы'
+            ])->nullable();
             $table->timestamps();
         });
     }

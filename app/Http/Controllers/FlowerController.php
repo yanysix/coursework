@@ -43,9 +43,10 @@ class FlowerController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'nullable|numeric',
             'image' => 'nullable|image|max:2048',
+            'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
         ]);
 
-        $data = $request->only('name', 'price');
+        $data = $request->only('name', 'price', 'zodiac_sign');
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('flowers', 'public');
@@ -63,12 +64,13 @@ class FlowerController extends Controller
                     'id' => $flower->id,
                     'name' => $flower->name,
                     'price' => $flower->price,
+                    'zodiac_sign' => $flower->zodiac_sign,
                     'image_url' => $flower->image ? asset('storage/' . $flower->image) : null,
                 ]
             ]);
         }
 
-        return redirect()->route('admin.flowers.index')->with('success', 'Цветок успешно добавлен!');
+        return redirect()->route('admin.flowers.admin')->with('success', 'Цветок успешно добавлен!');
     }
 
 
@@ -83,9 +85,10 @@ class FlowerController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'nullable|numeric',
             'image' => 'nullable|image|max:2048',
+            'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
         ]);
 
-        $data = $request->only('name', 'price');
+        $data = $request->only('name', 'price', 'zodiac_sign');
 
         if ($request->hasFile('image')) {
             if ($flower->image) {
@@ -103,17 +106,18 @@ class FlowerController extends Controller
                     'id' => $flower->id,
                     'name' => $flower->name,
                     'price' => $flower->price,
+                    'zodiac_sign' => $flower->zodiac_sign,
                     'image_url' => $flower->image ? asset('storage/' . $flower->image) : null,
                 ]
             ]);
         }
 
-        return redirect()->route('admin.flowers.index')->with('success', 'Цветок успешно обновлен!');
+        return redirect()->route('admin.flowers.admin')->with('success', 'Цветок успешно обновлен!');
     }
 
     public function destroy(Flower $flower)
     {
         $flower->delete();
-        return redirect()->route('admin.flowers.index')->with('success', 'Цветок удален!');
+        return redirect()->route('admin.flowers.admin')->with('success', 'Цветок удален!');
     }
 }

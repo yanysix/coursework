@@ -32,6 +32,25 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="zodiac_sign">Знак зодиака (необязательно)</label>
+                    <select id="zodiac_sign" name="zodiac_sign">
+                        <option value="">— Без привязки —</option>
+                        <option value="Овен">Овен</option>
+                        <option value="Телец">Телец</option>
+                        <option value="Близнецы">Близнецы</option>
+                        <option value="Рак">Рак</option>
+                        <option value="Лев">Лев</option>
+                        <option value="Дева">Дева</option>
+                        <option value="Весы">Весы</option>
+                        <option value="Скорпион">Скорпион</option>
+                        <option value="Стрелец">Стрелец</option>
+                        <option value="Козерог">Козерог</option>
+                        <option value="Водолей">Водолей</option>
+                        <option value="Рыбы">Рыбы</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="image">Изображение</label>
                     <input type="file" id="image" name="image" accept="image/*">
                 </div>
@@ -49,7 +68,7 @@
                 @if($package->image)
                     <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->name }}" class="flower-image">
                 @endif
-
+                <p>Знак: {{ $package->zodiac_sign ?? '—' }}</p>
                 <p class="price">{{ $package->price ? $package->price.' ₽' : '-' }}</p>
 
                 <div class="card-actions">
