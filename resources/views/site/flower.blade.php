@@ -50,8 +50,6 @@
 <main class="main1">
     <section class="flowers-section">
         <h2>Наши цветы</h2>
-
-        <!-- Форма поиска и фильтрации -->
         <form method="GET" action="{{ route('flower') }}" class="filter-form">
             <input type="text" name="search" placeholder="Поиск по названию" value="{{ request('search') }}">
             <input type="number" name="min_price" placeholder="Мин. цена" value="{{ request('min_price') }}">

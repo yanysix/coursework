@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ asset('css/zodiac-result.css') }}">
 </head>
 <body>
-<!-- HEADER -->
 <header>
     <div class="header">
         <nav class="nav-link">
@@ -55,8 +54,6 @@
     </h1>
 
     <div class="zodiac-result-cards">
-
-        <!-- Блок цветка -->
         <div class="zodiac-card">
             <h2>Идеальный цветок</h2>
 
@@ -80,8 +77,6 @@
                 </a>
             @endauth
         </div>
-
-        <!-- Блок упаковки -->
         <div class="zodiac-card">
             <h2>Идеальная упаковка</h2>
 

@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 </head>
 <body>
-<!-- HEADER -->
 <header>
 <div class="header">
     <nav class="nav-link">

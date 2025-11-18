@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
-<!-- HEADER -->
 <header>
     <div class="header">
         <nav class="nav-link">
@@ -54,7 +53,6 @@
         <p class="success-message">{{ session('success_info') }}</p>
     @endif
 
-    <!-- Блок аватарки -->
     <div class="settings-block">
         <h3>Аватар</h3>
         <div class="avatar-preview-wrapper">
@@ -76,7 +74,6 @@
         </form>
     </div>
 
-    <!-- Блок личной информации -->
     <div class="settings-block">
         <h3>Личная информация</h3>
         <form method="POST" action="{{ route('profile.update') }}">
@@ -97,7 +94,6 @@
 
     <hr class="divider">
 
-    <!-- Блок смены пароля -->
     @if(session('success_password'))
         <p class="success-message">{{ session('success_password') }}</p>
     @endif
@@ -118,7 +114,6 @@
         </form>
     </div>
 
-    <!-- Блок удаления аккаунта -->
     <div class="settings-block">
         <h3>Удаление аккаунта</h3>
         <p class="warning-text">

@@ -11,7 +11,6 @@
 
 <header>
     <div class="header">
-        <!-- Flash сообщение -->
         @if(session('success'))
             <div class="flash-message">
                 <span class="flash-icon">✔</span>
@@ -56,7 +55,6 @@
     <h1>Ваша корзина</h1>
 
     <div class="cart-container">
-        {{-- Цветы --}}
         @if($cartItemsFlowers->count())
             <h2>Цветы</h2>
             @foreach($cartItemsFlowers as $item)

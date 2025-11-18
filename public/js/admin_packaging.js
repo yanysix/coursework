@@ -17,9 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const storeUrl = form.dataset.storeUrl;
 
 
-    // -----------------------------
     // Открытие модалки (добавление)
-    // -----------------------------
     openBtn.addEventListener("click", function () {
         modal.style.display = "block";
 

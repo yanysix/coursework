@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PackagingController extends Controller
 {
-    /**
-     * Список всех упаковок
-     */
     public function admin()
     {
         $packagings = Packaging::all();
@@ -23,9 +20,6 @@ class PackagingController extends Controller
         return view('site.packaging', compact('packagings'));
     }
 
-    /**
-     * Сохранение новой упаковки (обычная форма или модалка)
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -58,7 +52,6 @@ class PackagingController extends Controller
 
         $packaging = Packaging::create($data);
 
-        // Если AJAX — возвращаем JSON
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
@@ -76,9 +69,6 @@ class PackagingController extends Controller
             ->with('success', 'Упаковка успешно добавлена!');
     }
 
-    /**
-     * Получение данных упаковки для редактирования (AJAX)
-     */
     public function edit(Packaging $packaging)
     {
         if (request()->ajax()) {
@@ -94,9 +84,6 @@ class PackagingController extends Controller
         return view('admin.packaging.edit', compact('packaging'));
     }
 
-    /**
-     * Обновление упаковки
-     */
     public function update(Request $request, Packaging $packaging)
     {
         $request->validate([
@@ -124,7 +111,6 @@ class PackagingController extends Controller
         $data = $request->only(['name', 'price', 'description', 'zodiac_sign']);
 
         if ($request->hasFile('image')) {
-            // Удаляем старое изображение
             if ($packaging->image) {
                 Storage::disk('public')->delete($packaging->image);
             }
@@ -150,9 +136,6 @@ class PackagingController extends Controller
             ->with('success', 'Упаковка успешно обновлена!');
     }
 
-    /**
-     * Удаление упаковки
-     */
     public function destroy(Packaging $packaging)
     {
         if ($packaging->image) {

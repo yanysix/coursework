@@ -49,7 +49,6 @@ class ZodiacController extends Controller
 
     private function getZodiacSign($date)
     {
-        // 🟢 Исправление — превращаем строку даты в Carbon
         $date = Carbon::parse($date);
 
         $day = (int)$date->format('d');

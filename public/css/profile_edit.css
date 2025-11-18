@@ -5,7 +5,6 @@
     padding: 0 20px;
 }
 
-/* Заголовок */
 .settings-title {
     font-size: 32px;
     font-weight: 700;
@@ -14,7 +13,6 @@
     text-align: center;
 }
 
-/* Блоки настроек */
 .settings-block {
     background: #ffffff;
     padding: 25px 30px;
@@ -23,19 +21,16 @@
     margin-bottom: 20px;
 }
 
-/* Описание блока */
 .settings-block h3 {
     font-size: 20px;
     margin-bottom: 15px;
     color: #333;
 }
 
-/* Поля */
 .settings-row {
     margin-bottom: 18px;
 }
 
-/* Подписи */
 .settings-label {
     font-weight: 600;
     font-size: 16px;
@@ -44,7 +39,6 @@
     display: block;
 }
 
-/* Инпуты */
 .settings-input {
     width: 100%;
     border: 1px solid #ddd;
@@ -62,14 +56,12 @@
     outline: none;
 }
 
-/* Ошибки */
 .error {
     color: red;
     font-size: 14px;
     margin-top: 6px;
 }
 
-/* Кнопка сохранить */
 .save-btn {
     width: 100%;
     padding: 14px;
@@ -88,7 +80,6 @@
     background: #c4475c;
 }
 
-/* Назад */
 .back-link {
     display: block;
     text-align: center;

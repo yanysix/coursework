@@ -1,4 +1,3 @@
-// registerModal.js
 document.addEventListener('DOMContentLoaded', function() {
     const registerModal = document.getElementById('registerModal');
     const closeButtons = document.querySelectorAll('.close');

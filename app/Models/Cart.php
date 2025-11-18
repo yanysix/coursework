@@ -15,25 +15,16 @@ class Cart extends Model
         'total_amount'
     ];
 
-    /**
-     * Связь с пользователем
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'fk_user_id');
     }
 
-    /**
-     * Связь с цветами в корзине
-     */
     public function flowers(): HasMany
     {
         return $this->hasMany(CartFlowers::class, 'fk_cart_id');
     }
 
-    /**
-     * Связь с упаковками в корзине
-     */
     public function packagings(): HasMany
     {
         return $this->hasMany(CartPackagings::class, 'fk_cart_id');

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
-<!-- HEADER -->
 <header>
     <div class="header">
         <nav class="nav-link">
@@ -47,7 +46,6 @@
     </div>
 </header>
 
-<!-- MAIN -->
 <main class="main">
     <div class="container">
         <h1 class="main_title">Цветы и декор в стиле BLOSS</h1>
@@ -61,7 +59,6 @@
     </div>
 </main>
 
-<!-- ОСТАЛЬНЫЙ КОНТЕНТ -->
 <div class="container_img1">
     <img src="{{ asset('img/image 4.png') }}" class="image4" alt="image4">
     <img src="{{ asset('img/image 5.png') }}" class="image5" alt="image5">

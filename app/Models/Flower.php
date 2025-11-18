@@ -8,15 +8,11 @@ use Illuminate\Support\Facades\Storage;
 
 class Flower extends Model
 {
-    // Таблица в базе
     protected $table = 'flowers';
 
-    // Разрешенные для массового заполнения поля
     protected $fillable = ['name', 'price', 'image', 'zodiac_sign'];
 
-    /**
-     * Связь многие-ко-многим с букетами
-     */
+
     public function bouquets(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -27,9 +23,6 @@ class Flower extends Model
         )->withPivot('count');
     }
 
-    /**
-     * Получить полный URL изображения
-     */
     public function getImageUrlAttribute(): ?string
     {
         return $this->image ? Storage::url($this->image) : null;

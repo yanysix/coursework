@@ -78,7 +78,6 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Цветок добавлен в корзину!');
     }
 
-
     // Удаление элемента из корзины (цветок или упаковка)
     public function removeItem($type, $id)
     {

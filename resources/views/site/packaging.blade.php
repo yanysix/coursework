@@ -50,8 +50,6 @@
 <main class="main1">
     <section class="flowers-section">
         <h2>Наши упаковки</h2>
-
-        <!-- Flash сообщение -->
         @if(session('success'))
             <div class="flash-message">
                 {{ session('success') }}

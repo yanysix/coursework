@@ -7,7 +7,6 @@
         <button id="show-add-flower" class="btn btn-primary">Добавить цветок</button>
     </div>
 
-    <!-- Модальное окно для добавления и редактирования -->
     <div id="flower-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>

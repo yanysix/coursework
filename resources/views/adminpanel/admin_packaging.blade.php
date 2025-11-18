@@ -7,7 +7,6 @@
         <button id="show-add-packaging" class="btn btn-primary">Добавить упаковку</button>
     </div>
 
-    <!-- Модальное окно -->
     <div id="packaging-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>

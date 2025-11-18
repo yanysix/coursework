@@ -35,7 +35,6 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        // ----- Обновление личной информации -----
         if ($request->has('update_info')) {
             $request->validate([
                 'name'  => 'required|string|min:2|max:50|regex:/^[А-Яа-яA-Za-z\s\-]+$/u',
@@ -58,7 +57,6 @@ class ProfileController extends Controller
             return back()->with('success_info', 'Личная информация обновлена!');
         }
 
-        // ----- Обновление пароля -----
         if ($request->has('update_password')) {
             $request->validate([
                 'password' => 'required|string|min:6|max:64|confirmed|regex:/^(?=.*[A-Za-z])(?=.*\d).{6,}$/',
