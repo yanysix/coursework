@@ -8,7 +8,6 @@ use App\Http\Controllers\FlowerController;
 use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\FlowerCartController;
 use App\Http\Controllers\ZodiacController;
 
 
@@ -17,29 +16,13 @@ use App\Http\Controllers\ZodiacController;
 | Публичные страницы
 |--------------------------------------------------------------------------
 */
-Route::view('/', 'welcome');
-Route::view('/main', 'site.main')->name('main');
-Route::view('/decoration', 'site.decoration')->name('decoration');
-Route::view('/packaging', 'site.packaging')->name('packaging');
-Route::view('/masterclass', 'site.masterclass')->name('masterclass');
-Route::view('/flower', 'site.flower')->name('flower');
-
-/*
-|--------------------------------------------------------------------------
-| Профиль пользователя
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth')->group(function () {
-    Route::view('/profile', 'site.profile')->name('profile');
-
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
-    Route::get('/profile/password', [ProfileController::class, 'editPassword'])->name('profile.edit.password');
-    Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
-
-    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
-    Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
+Route::middleware('throttle:60,1')->group(function () {
+    Route::view('/', 'welcome');
+    Route::view('/main', 'site.main')->name('main');
+    Route::view('/decoration', 'site.decoration')->name('decoration');
+    Route::view('/masterclass', 'site.masterclass')->name('masterclass');
+    Route::get('/flower', [FlowerController::class, 'index'])->name('flower');
+    Route::get('/packaging', [PackagingController::class, 'index'])->name('packaging');
 });
 
 /*
@@ -47,53 +30,79 @@ Route::middleware('auth')->group(function () {
 | Регистрация и авторизация
 |--------------------------------------------------------------------------
 */
-Route::get('/register', fn() => view('site.register'))->name('register');
-Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+Route::middleware(['guest', 'throttle:10,1'])->group(function () {
+    Route::get('/register', fn() => view('site.register'))->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
-Route::get('/auth', fn() => view('site.auth'))->name('auth')->middleware('guest');
-
-Route::post('/auth', [AuthController::class, 'login'])->name('auth.login');
+    Route::get('/auth', fn() => view('site.auth'))->name('auth');
+    Route::post('/auth', [AuthController::class, 'login'])->name('auth.login');
+});
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
 /*
 |--------------------------------------------------------------------------
-| Админ-панель
+| Зодиак
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [FlowerController::class, 'admin'])->name('flowers.admin');
-    // CRUD для цветов
-    Route::resource('flowers', FlowerController::class);
-
-    Route::get('/packagings', [PackagingController::class, 'admin'])->name('packaging.admin');
-    // CRUD для упаковки
-    Route::resource('packaging', PackagingController::class);
+Route::prefix('zodiac')->middleware('throttle:20,1')->group(function () {
+    Route::get('/', [ZodiacController::class, 'index'])->name('zodiac.index');
+    Route::post('/select', [ZodiacController::class, 'select'])->name('zodiac.select');
+    Route::get('/result', [ZodiacController::class, 'result'])->name('zodiac.result');
 });
 
-// Маршрут для кастомной обертки
-Route::post('/admin/packaging/custom', [PackagingController::class, 'storeCustom'])->name('packaging.custom');
 
-Route::get('/cards', function () {
-    return view('site.cards'); // путь к шаблону, который мы создали
-})->name('cards');
+/*
+|--------------------------------------------------------------------------
+| Профиль пользователя
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'throttle:30,1'])->prefix('profile')->group(function () {
+    Route::get('/', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
+    Route::delete('/delete', [ProfileController::class, 'delete'])->name('profile.delete');
+});
 
-Route::get('/cards', [CardController::class, 'index'])->name('cards.index');
-Route::post('/cards/create-pdf', [CardController::class, 'createPdf'])->name('cards.createPdf');
-Route::get('/cards/download/{token}', [CardController::class, 'download'])->name('cards.download');
-
-
-Route::get('/flower', [FlowerController::class, 'index'])->name('flower');
-Route::get('/packaging', [PackagingController::class, 'index'])->name('packaging');
-
-
-Route::prefix('cart')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Корзина
+|--------------------------------------------------------------------------
+*/
+Route::prefix('cart')->middleware(['auth', 'throttle:30,1'])->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart');
     Route::post('/flower/add', [CartController::class, 'addFlower'])->name('cart.flower.add');
     Route::post('/packaging/add', [CartController::class, 'addPackaging'])->name('cart.packaging.add');
     Route::delete('/remove/{type}/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Открытки / PDF
+|--------------------------------------------------------------------------
+*/
+Route::prefix('cards')->middleware(['auth', 'throttle:30,1'])->group(function () {
+    Route::get('/', [CardController::class, 'index'])->name('cards.index');
+    Route::post('/create-pdf', [CardController::class, 'createPdf'])->name('cards.createPdf');
+    Route::get('/download/{token}', [CardController::class, 'download'])->name('cards.download');
+});
 
-Route::get('/zodiac', [ZodiacController::class, 'index'])->name('zodiac.index');
-Route::post('/zodiac/select', [ZodiacController::class, 'select'])->name('zodiac.select');
+/*
+|--------------------------------------------------------------------------
+| Админ-панель
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->middleware(['admin', 'throttle:30,1'])->group(function () {
+    Route::get('/flowers', [FlowerController::class, 'admin'])->name('flowers.admin');
+    Route::resource('flowers', FlowerController::class);
+
+    Route::get('/packagings', [PackagingController::class, 'admin'])->name('packaging.admin');
+    Route::resource('packaging', PackagingController::class);
+
+    Route::post('/packaging/custom', [PackagingController::class, 'storeCustom'])->name('packaging.custom');
+});
+
+
+

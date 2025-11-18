@@ -11,31 +11,47 @@ class ZodiacController extends Controller
 {
     public function index()
     {
-        return view('site.zodiac'); // страница с вводом даты
+        return view('site.zodiac');
     }
 
     public function select(Request $request)
     {
-        $request->validate([
-            'birthday' => 'required|date',
+        // Валидация даты
+        $validated = $request->validate([
+            'birthday' => 'required|date|before_or_equal:today|after_or_equal:1900-01-01',
+        ], [
+            'birthday.required' => 'Введите вашу дату рождения.',
+            'birthday.date' => 'Введите корректную дату.',
+            'birthday.before_or_equal' => 'Дата рождения не может быть в будущем.',
+            'birthday.after_or_equal' => 'Дата рождения слишком старая.',
         ]);
 
-        $birthday = Carbon::parse($request->birthday);
+        $birthday = $validated['birthday'];
+
         $sign = $this->getZodiacSign($birthday);
 
-        // Ищем подходящие упаковку и цветок
+        return redirect()->route('zodiac.result', [
+            'sign' => $sign,
+        ]);
+    }
+
+
+    public function result(Request $request)
+    {
+        $sign = $request->sign;
+
         $flower = Flower::where('zodiac_sign', $sign)->first();
         $packaging = Packaging::where('zodiac_sign', $sign)->first();
-
-        // Если не нашли — берём первые
-        if (!$flower) $flower = Flower::first();
-        if (!$packaging) $packaging = Packaging::first();
 
         return view('site.zodiac_result', compact('sign', 'flower', 'packaging'));
     }
 
+
     private function getZodiacSign($date)
     {
+        // 🟢 Исправление — превращаем строку даты в Carbon
+        $date = Carbon::parse($date);
+
         $day = (int)$date->format('d');
         $month = (int)$date->format('m');
 

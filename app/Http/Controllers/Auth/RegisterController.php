@@ -13,9 +13,26 @@ class RegisterController extends Controller
     {
         // Валидация
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:6',
+            'name' => 'required|string|min:2|max:50|unique:users,name|regex:/^[А-Яа-яA-Za-z\s\-]+$/u',
+            'email' => 'required|string|email:rfc,dns|max:255|unique:users,email',
+            'password' => 'required|string|min:6|max:64|confirmed|regex:/^(?=.*[A-Za-z])(?=.*\d).{6,}$/'
+        ], [
+            'name.required' => 'Введите ваше имя.',
+            'name.min' => 'Имя должно содержать минимум 2 символа.',
+            'name.max' => 'Имя не должно превышать 50 символов.',
+            'name.regex' => 'Имя может содержать только буквы, пробелы и дефис.',
+            'name.unique' => 'Такое имя уже занято',
+
+            'email.required' => 'Введите email.',
+            'email.email' => 'Введите корректный email.',
+            'email.unique' => 'Этот email уже зарегистрирован.',
+            'email.max' => 'Email не должен превышать 255 символов.',
+
+            'password.required' => 'Введите пароль.',
+            'password.min' => 'Пароль должен быть не менее 6 символов.',
+            'password.max' => 'Пароль слишком длинный.',
+            'password.confirmed' => 'Пароли не совпадают.',
+            'password.regex' => 'Пароль должен содержать хотя бы одну букву и одну цифру.',
         ]);
 
         // Создание пользователя

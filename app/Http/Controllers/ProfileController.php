@@ -35,11 +35,20 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        // Обновление личной информации
+        // ----- Обновление личной информации -----
         if ($request->has('update_info')) {
             $request->validate([
-                'name'  => 'required|string|max:255',
-                'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+                'name'  => 'required|string|min:2|max:50|regex:/^[А-Яа-яA-Za-z\s\-]+$/u',
+                'email' => 'required|string|email:rfc,dns|max:255|unique:users,email,' . $user->id,
+            ], [
+                'name.required' => 'Введите ваше имя.',
+                'name.min' => 'Имя должно содержать минимум 2 символа.',
+                'name.max' => 'Имя не должно превышать 50 символов.',
+                'name.regex' => 'Имя может содержать только буквы, пробелы и дефис.',
+
+                'email.required' => 'Введите email.',
+                'email.email' => 'Введите корректный email.',
+                'email.unique' => 'Этот email уже зарегистрирован.',
             ]);
 
             $user->name  = $request->name;
@@ -49,10 +58,16 @@ class ProfileController extends Controller
             return back()->with('success_info', 'Личная информация обновлена!');
         }
 
-        // Обновление пароля
+        // ----- Обновление пароля -----
         if ($request->has('update_password')) {
             $request->validate([
-                'password' => 'required|min:6|confirmed',
+                'password' => 'required|string|min:6|max:64|confirmed|regex:/^(?=.*[A-Za-z])(?=.*\d).{6,}$/',
+            ], [
+                'password.required' => 'Введите пароль.',
+                'password.min' => 'Пароль должен содержать минимум 6 символов.',
+                'password.max' => 'Пароль слишком длинный.',
+                'password.confirmed' => 'Пароли не совпадают.',
+                'password.regex' => 'Пароль должен содержать хотя бы одну букву и одну цифру.',
             ]);
 
             $user->password = Hash::make($request->password);
@@ -63,23 +78,25 @@ class ProfileController extends Controller
 
         return back();
     }
+
     public function delete(Request $request)
     {
         $user = Auth::user();
 
-        // Проверяем пароль перед удалением
         $request->validate([
-            'password' => 'required',
+            'password' => 'required|string',
+        ], [
+            'password.required' => 'Введите пароль для подтверждения.',
         ]);
 
-        if (!\Hash::check($request->password, $user->password)) {
+        if (!Hash::check($request->password, $user->password)) {
             return back()->withErrors(['password' => 'Неверный пароль']);
         }
 
-        Auth::logout(); // выходим из аккаунта
-        $user->delete(); // удаляем пользователя
+        Auth::logout();
+        $user->delete();
 
-        return redirect()->route('main')->with('success', 'Ваш аккаунт удалён'); // редирект на главную
+        return redirect()->route('main')->with('success', 'Ваш аккаунт удалён.');
     }
 
     public function updateAvatar(Request $request)
@@ -87,21 +104,23 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ], [
+            'avatar.required' => 'Выберите изображение для аватара.',
+            'avatar.image' => 'Файл должен быть изображением.',
+            'avatar.mimes' => 'Допустимые форматы: jpeg, png, jpg, gif, webp.',
+            'avatar.max' => 'Размер изображения не должен превышать 2 МБ.',
         ]);
 
-        // Удаляем старый аватар если есть
         if ($user->avatar) {
-            \Storage::delete($user->avatar);
+            \Storage::disk('public')->delete($user->avatar);
         }
 
-        // Сохраняем новый аватар
         $path = $request->file('avatar')->store('avatars', 'public');
         $user->avatar = $path;
         $user->save();
 
-        return redirect()->back()->with('success_info', 'Аватар успешно обновлён!');
+        return back()->with('success_info', 'Аватар успешно обновлён!');
     }
-
 
 }

@@ -29,11 +29,26 @@ class PackagingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required|string|max:255',
-            'price' => 'nullable|numeric',
-            'image' => 'nullable|image|max:2048',
+            'name' => 'required|string|max:255|unique:packagings,name,' . ($packaging->id ?? 'NULL'),
+            'price' => 'nullable|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
+        ], [
+            'name.required' => 'Введите название упаковки.',
+            'name.string' => 'Название должно быть строкой.',
+            'name.max' => 'Название не должно превышать 255 символов.',
+            'name.unique' => 'Такая упаковка уже существует.',
+
+            'price.numeric' => 'Цена должна быть числом.',
+            'price.min' => 'Цена не может быть отрицательной.',
+
+            'image.image' => 'Файл должен быть изображением.',
+            'image.mimes' => 'Допустимые форматы: jpeg, png, jpg, gif, webp.',
+            'image.max' => 'Размер изображения не должен превышать 2 МБ.',
+
+            'zodiac_sign.in' => 'Выберите корректный знак зодиака.',
         ]);
+
 
         $data = $request->only(['name', 'price', 'zodiac_sign']);
 
@@ -85,11 +100,26 @@ class PackagingController extends Controller
     public function update(Request $request, Packaging $packaging)
     {
         $request->validate([
-            'name'  => 'required|string|max:255',
-            'price' => 'nullable|numeric',
-            'image' => 'nullable|image|max:2048',
+            'name' => 'required|string|max:255|unique:packagings,name,' . ($packaging->id ?? 'NULL'),
+            'price' => 'nullable|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
+        ], [
+            'name.required' => 'Введите название упаковки.',
+            'name.string' => 'Название должно быть строкой.',
+            'name.max' => 'Название не должно превышать 255 символов.',
+            'name.unique' => 'Такая упаковка уже существует.',
+
+            'price.numeric' => 'Цена должна быть числом.',
+            'price.min' => 'Цена не может быть отрицательной.',
+
+            'image.image' => 'Файл должен быть изображением.',
+            'image.mimes' => 'Допустимые форматы: jpeg, png, jpg, gif, webp.',
+            'image.max' => 'Размер изображения не должен превышать 2 МБ.',
+
+            'zodiac_sign.in' => 'Выберите корректный знак зодиака.',
         ]);
+
 
         $data = $request->only(['name', 'price', 'description', 'zodiac_sign']);
 

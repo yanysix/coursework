@@ -19,9 +19,24 @@ class CardController extends Controller
     public function createPdf(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'message' => 'required|string',
-            'image' => 'nullable|image|max:2048',
+            'title'   => 'required|string|max:255',
+            'message' => 'required|string|max:2000',
+            'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'color'   => 'nullable|string|regex:/^#[0-9A-Fa-f]{6}$/',
+        ], [
+            'title.required' => 'Укажите заголовок открытки.',
+            'title.string' => 'Заголовок должен быть текстом.',
+            'title.max' => 'Заголовок не должен превышать 255 символов.',
+
+            'message.required' => 'Введите сообщение для открытки.',
+            'message.string' => 'Сообщение должно быть текстом.',
+            'message.max' => 'Сообщение слишком длинное (максимум 2000 символов).',
+
+            'image.image' => 'Файл должен быть изображением.',
+            'image.mimes' => 'Допустимые форматы изображения: jpeg, png, jpg, gif.',
+            'image.max' => 'Изображение не должно превышать 2 МБ.',
+
+            'color.regex' => 'Цвет должен быть в формате HEX, например #ffffff.',
         ]);
 
         $imagePath = null;
@@ -29,33 +44,31 @@ class CardController extends Controller
             $imagePath = $request->file('image')->store('cards_images', 'public');
         }
 
-        $publicToken = Str::uuid();
+        $publicToken = \Illuminate\Support\Str::uuid();
 
-        $pdf = PDF::loadView('site.pdf_template', [
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('site.pdf_template', [
             'title' => $request->title,
             'message' => $request->message,
             'image' => $imagePath ? public_path('storage/' . $imagePath) : null,
             'color' => $request->color ?? '#ffffff'
         ]);
 
-        $pdfPath = 'cards_pdfs/' . Str::slug($request->title) . '-' . time() . '.pdf';
+        $pdfPath = 'cards_pdfs/' . \Illuminate\Support\Str::slug($request->title) . '-' . time() . '.pdf';
         $pdf->save(storage_path('app/public/' . $pdfPath));
 
-        $card = Card::create([
+        $card = \App\Models\Card::create([
             'title' => $request->title,
             'message' => $request->message,
-            'fk_user_id' => Auth::user()->id,
+            'fk_user_id' => Auth::id(),
             'path' => $pdfPath,
             'public_token' => $publicToken,
         ]);
 
-        // сохраняем путь для скачивания через сессию
         return redirect()->back()->with([
             'success' => 'Открытка успешно создана!',
             'download' => asset('storage/' . $pdfPath)
         ]);
     }
-
 
 
     public function download($token)

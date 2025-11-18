@@ -11,12 +11,16 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required','email'],
-            'password' => ['required'],
+            'email' => ['required', 'string', 'email:rfc,dns'],
+            'password' => ['required', 'string', 'min:6'],
+        ], [
+            'email.required' => 'Введите email.',
+            'email.email' => 'Введите корректный email.',
+            'password.required' => 'Введите пароль.',
+            'password.min' => 'Пароль должен содержать минимум 6 символов.',
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
-
             $request->session()->regenerate();
 
             // Админ
@@ -29,11 +33,9 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Неверный email или пароль',
+            'email' => 'Неверный email или пароль.',
         ])->onlyInput('email');
     }
-
-
 
     public function logout(Request $request)
     {

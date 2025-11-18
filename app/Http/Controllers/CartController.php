@@ -32,7 +32,13 @@ class CartController extends Controller
     {
         $request->validate([
             'packaging_id' => 'required|exists:packaging,id',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
+        ], [
+            'packaging_id.required' => 'Выберите упаковку.',
+            'packaging_id.exists' => 'Такой упаковки не существует.',
+            'price.required' => 'Цена упаковки обязательна.',
+            'price.numeric' => 'Цена должна быть числом.',
+            'price.min' => 'Цена не может быть отрицательной.',
         ]);
 
         $cart = Cart::firstOrCreate(['fk_user_id' => Auth::id()]);
@@ -47,12 +53,17 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Упаковка добавлена в корзину!');
     }
 
-    // Добавление цветка в корзину
     public function addFlower(Request $request)
     {
         $request->validate([
             'flower_id' => 'required|exists:flowers,id',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
+        ], [
+            'flower_id.required' => 'Выберите цветок.',
+            'flower_id.exists' => 'Такого цветка не существует.',
+            'price.required' => 'Цена цветка обязательна.',
+            'price.numeric' => 'Цена должна быть числом.',
+            'price.min' => 'Цена не может быть отрицательной.',
         ]);
 
         $cart = Cart::firstOrCreate(['fk_user_id' => Auth::id()]);
@@ -66,6 +77,7 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Цветок добавлен в корзину!');
     }
+
 
     // Удаление элемента из корзины (цветок или упаковка)
     public function removeItem($type, $id)
