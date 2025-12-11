@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLOSS</title>
+    <title>Наши букеты - BLOSS</title>
     <link rel="stylesheet" href="{{ asset('css/flower.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 <body>
-
 <header>
     <div class="header">
         <nav class="nav-link">
             <a href="{{ route('decoration') }}">ЦВЕТОЧНОЕ ОФОРМЛЕНИЕ</a>
             <a href="{{ route('flower') }}">ЦВЕТЫ</a>
+
         </nav>
 
         <div class="header-logo">
@@ -49,31 +49,32 @@
 
 <main class="main1">
     <section class="flowers-section">
-        <h2>Наши цветы</h2>
-        <form method="GET" action="{{ route('flower') }}" class="filter-form">
+        <h2>Наши букеты</h2>
+        <form method="GET" action="{{ route('bouquets') }}" class="filter-form">
             <input type="text" name="search" placeholder="Поиск по названию" value="{{ request('search') }}">
             <input type="number" name="min_price" placeholder="Мин. цена" value="{{ request('min_price') }}">
             <input type="number" name="max_price" placeholder="Макс. цена" value="{{ request('max_price') }}">
             <button type="submit" class="cta-button">Применить</button>
-            <a href="{{ route('flower') }}" class="cta-button reset-button">Сбросить</a>
+            <a href="{{ route('bouquets') }}" class="cta-button reset-button">Сбросить</a>
         </form>
 
         <div class="gallery-grid">
-            @forelse($flowers as $flower)
+            @forelse($bouquets as $bouquet)
                 <div class="card-item">
-                    @if($flower->image)
-                        <img src="{{ asset('storage/' . $flower->image) }}" alt="{{ $flower->name }}" class="flower-image">
+                    @if($bouquet->image)
+                        <img src="{{ asset('storage/' . $bouquet->image) }}" alt="{{ $bouquet->name }}" class="flower-image">
                     @else
                         <img src="{{ asset('img/placeholder.png') }}" alt="Нет изображения" class="flower-image">
                     @endif
-                    <h3>{{ $flower->name }}</h3>
-                    @if($flower->price)
-                        <p class="price">Цена: {{ $flower->price }} ₽</p>
+                    <h3>{{ $bouquet->name }}</h3>
+                    <p>Знак зодиака: {{ $bouquet->zodiac_sign ?? '—' }}</p>
+                    @if($bouquet->price)
+                        <p class="price">Цена: {{ $bouquet->price }} ₽</p>
                     @endif
-                        <form method="POST" action="{{ route('cart.flower.add') }}" class="add-to-cart-form">
+                        <form method="POST" action="{{ route('cart.bouquet.add') }}" class="add-to-cart-form">
                             @csrf
-                            <input type="hidden" name="flower_id" value="{{ $flower->id }}">
-                            <input type="hidden" name="price" value="{{ $flower->price }}">
+                            <input type="hidden" name="bouquet_id" value="{{ $bouquet->id }}">
+                            <input type="hidden" name="price" value="{{ $bouquet->price }}">
 
                             <div class="quantity-wrapper">
                                 <button type="button" class="qty-btn" onclick="this.nextElementSibling.stepDown()">-</button>
@@ -83,14 +84,13 @@
 
                             <button type="submit" class="cta-button">Добавить в корзину</button>
                         </form>
-                </div>
+                    </div>
                     @empty
-                <p>Цветов пока нет.</p>
+                <p>Букетов пока нет.</p>
             @endforelse
         </div>
     </section>
 </main>
-
 
 <footer class="container7">
     <div class="container8">

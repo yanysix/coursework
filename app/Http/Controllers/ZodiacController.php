@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bouquet;
 use Illuminate\Http\Request;
-use App\Models\Flower;
-use App\Models\Packaging;
 use Carbon\Carbon;
 
 class ZodiacController extends Controller
@@ -40,11 +39,12 @@ class ZodiacController extends Controller
     {
         $sign = $request->sign;
 
-        $flower = Flower::where('zodiac_sign', $sign)->first();
-        $packaging = Packaging::where('zodiac_sign', $sign)->first();
+        // Подбираем только букет по знаку зодиака
+        $bouquet = Bouquet::where('zodiac_sign', $sign)->first();
 
-        return view('site.zodiac_result', compact('sign', 'flower', 'packaging'));
+        return view('site.zodiac_result', compact('sign', 'bouquet'));
     }
+
 
 
     private function getZodiacSign($date)

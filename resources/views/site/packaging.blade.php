@@ -24,7 +24,7 @@
 
         <nav class="nav-link">
             <a href="{{ route('packaging') }}">УПАКОВКИ</a>
-            <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
+            <a href="{{ route('bouquets') }}">БУКЕТЫ</a>
             <a href="{{ route('cart') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
             <div class="profile-dropdown">
@@ -50,6 +50,14 @@
 <main class="main1">
     <section class="flowers-section">
         <h2>Наши упаковки</h2>
+        <form method="GET" action="{{ route('packaging') }}" class="filter-form">
+            <input type="text" name="search" placeholder="Поиск по названию" value="{{ request('search') }}">
+            <input type="number" name="min_price" placeholder="Мин. цена" value="{{ request('min_price') }}">
+            <input type="number" name="max_price" placeholder="Макс. цена" value="{{ request('max_price') }}">
+            <button type="submit" class="cta-button">Применить</button>
+            <a href="{{ route('packaging') }}" class="cta-button reset-button">Сбросить</a>
+        </form>
+
         @if(session('success'))
             <div class="flash-message">
                 {{ session('success') }}
@@ -68,14 +76,21 @@
                     @if($packaging->price)
                         <p class="price">Цена: {{ $packaging->price }} ₽</p>
                     @endif
-                    <form action="{{ route('cart.packaging.add') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="packaging_id" value="{{ $packaging->id }}">
-                        <input type="hidden" name="price" value="{{ $packaging->price }}">
-                        <button type="submit" class="cta-button">Добавить в корзину</button>
-                    </form>
-                </div>
-            @empty
+                        <form action="{{ route('cart.packaging.add') }}" method="POST" class="add-to-cart-form">
+                            @csrf
+                            <input type="hidden" name="packaging_id" value="{{ $packaging->id }}">
+                            <input type="hidden" name="price" value="{{ $packaging->price }}">
+
+                            <div class="quantity-wrapper">
+                                <button type="button" class="qty-btn" onclick="this.nextElementSibling.stepDown()">-</button>
+                                <input type="number" name="count" value="1" min="1" class="quantity-input">
+                                <button type="button" class="qty-btn" onclick="this.previousElementSibling.stepUp()">+</button>
+                            </div>
+
+                            <button type="submit" class="cta-button">Добавить в корзину</button>
+                        </form>
+                        </div>
+                    @empty
                 <p>Упаковок пока нет.</p>
             @endforelse
         </div>

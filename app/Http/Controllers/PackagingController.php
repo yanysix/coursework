@@ -14,19 +14,33 @@ class PackagingController extends Controller
         return view('adminpanel.admin_packaging', compact('packagings'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $packagings = Packaging::all();
+        $query = Packaging::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        $packagings = $query->get();
+
         return view('site.packaging', compact('packagings'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:packagings,name,' . ($packaging->id ?? 'NULL'),
+            'name' => 'required|string|max:255|unique:packaging,name,' . ($packaging->id ?? 'NULL'),
             'price' => 'nullable|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
         ], [
             'name.required' => 'Введите название упаковки.',
             'name.string' => 'Название должно быть строкой.',
@@ -40,11 +54,10 @@ class PackagingController extends Controller
             'image.mimes' => 'Допустимые форматы: jpeg, png, jpg, gif, webp.',
             'image.max' => 'Размер изображения не должен превышать 2 МБ.',
 
-            'zodiac_sign.in' => 'Выберите корректный знак зодиака.',
         ]);
 
 
-        $data = $request->only(['name', 'price', 'zodiac_sign']);
+        $data = $request->only(['name', 'price']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('packaging', 'public');
@@ -59,7 +72,6 @@ class PackagingController extends Controller
                     'id'    => $packaging->id,
                     'name'  => $packaging->name,
                     'price' => $packaging->price,
-                    'zodiac_sign' => $packaging->zodiac_sign,
                     'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
                 ]
             ]);
@@ -69,28 +81,12 @@ class PackagingController extends Controller
             ->with('success', 'Упаковка успешно добавлена!');
     }
 
-    public function edit(Packaging $packaging)
-    {
-        if (request()->ajax()) {
-            return response()->json([
-                'id'    => $packaging->id,
-                'name'  => $packaging->name,
-                'price' => $packaging->price,
-                'zodiac_sign' => $packaging->zodiac_sign,
-                'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
-            ]);
-        }
-
-        return view('admin.packaging.edit', compact('packaging'));
-    }
-
     public function update(Request $request, Packaging $packaging)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:packagings,name,' . ($packaging->id ?? 'NULL'),
+            'name' => 'required|string|max:255|unique:packaging,name,' . ($packaging->id ?? 'NULL'),
             'price' => 'nullable|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
         ], [
             'name.required' => 'Введите название упаковки.',
             'name.string' => 'Название должно быть строкой.',
@@ -104,11 +100,10 @@ class PackagingController extends Controller
             'image.mimes' => 'Допустимые форматы: jpeg, png, jpg, gif, webp.',
             'image.max' => 'Размер изображения не должен превышать 2 МБ.',
 
-            'zodiac_sign.in' => 'Выберите корректный знак зодиака.',
         ]);
 
 
-        $data = $request->only(['name', 'price', 'description', 'zodiac_sign']);
+        $data = $request->only(['name', 'price', 'description']);
 
         if ($request->hasFile('image')) {
             if ($packaging->image) {
@@ -126,7 +121,6 @@ class PackagingController extends Controller
                     'id'    => $packaging->id,
                     'name'  => $packaging->name,
                     'price' => $packaging->price,
-                    'zodiac_sign' => $packaging->zodiac_sign,
                     'image_url' => $packaging->image ? asset('storage/' . $packaging->image) : null,
                 ]
             ]);

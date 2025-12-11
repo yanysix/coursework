@@ -29,11 +29,11 @@
 
         <nav class="nav-link">
             <a href="{{ route('packaging') }}">УПАКОВКИ</a>
-            <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
+            <a href="{{ route('bouquets') }}">БУКЕТЫ</a>
             <a href="{{ route('cart') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
             <div class="profile-dropdown">
                 <img src="{{ Auth::check() && Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('img/profile.png') }}"
-                     class="profile-icon" alt="profile">
+                     class="bag profile-icon" alt="profile">
                 <div class="dropdown-content">
                     @guest
                         <a href="{{ route('auth') }}">Войти</a>
@@ -67,6 +67,22 @@
                         <p class="price">Цена: {{ $item->price }} ₽</p>
                     </div>
 
+                    <div class="quantity-control">
+                        <form method="POST" action="{{ route('cart.updateCount', ['type' => 'flower', 'id' => $item->id]) }}">
+                            @csrf
+                            <input type="hidden" name="action" value="decrement">
+                            <button type="submit">-</button>
+                        </form>
+
+                        <span>{{ $item->count }}</span>
+
+                        <form method="POST" action="{{ route('cart.updateCount', ['type' => 'flower', 'id' => $item->id]) }}">
+                            @csrf
+                            <input type="hidden" name="action" value="increment">
+                            <button type="submit">+</button>
+                        </form>
+                    </div>
+
                     <form method="POST" action="{{ route('cart.remove', ['type' => 'flower', 'id' => $item->id]) }}">
                         @csrf
                         @method('DELETE')
@@ -76,27 +92,79 @@
             @endforeach
         @endif
 
-        {{-- Упаковки --}}
         @if($cartItemsPackagings->count())
-            <h2>Упаковки</h2>
-            @foreach($cartItemsPackagings as $item)
-                <div class="cart-item">
-                    <img src="{{ $item->packaging->image ? asset('storage/' . $item->packaging->image) : asset('img/placeholder.png') }}"
-                         alt="{{ $item->packaging->name }}">
+                <h2>Упаковки</h2>
+                @foreach($cartItemsPackagings as $item)
+                    <div class="cart-item">
+                        <img src="{{ $item->packaging->image ? asset('storage/' . $item->packaging->image) : asset('img/placeholder.png') }}"
+                             alt="{{ $item->packaging->name }}">
 
-                    <div class="item-info">
-                        <h3>{{ $item->packaging->name }}</h3>
-                        <p class="price">Цена: {{ $item->price }} ₽</p>
+                        <div class="item-info">
+                            <h3>{{ $item->packaging->name }}</h3>
+                            <p class="price">Цена: {{ $item->price }} ₽</p>
+                        </div>
+
+                        <div class="quantity-control">
+                            <form method="POST" action="{{ route('cart.updateCount', ['type' => 'packaging', 'id' => $item->id]) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="decrement">
+                                <button type="submit">-</button>
+                            </form>
+
+                            <span>{{ $item->count }}</span>
+
+                            <form method="POST" action="{{ route('cart.updateCount', ['type' => 'packaging', 'id' => $item->id]) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="increment">
+                                <button type="submit">+</button>
+                            </form>
+                        </div>
+
+                        <form method="POST" action="{{ route('cart.remove', ['type' => 'packaging', 'id' => $item->id]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="remove-btn">Удалить</button>
+                        </form>
                     </div>
+                @endforeach
+            @endif
 
-                    <form method="POST" action="{{ route('cart.remove', ['type' => 'packaging', 'id' => $item->id]) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button class="remove-btn">Удалить</button>
-                    </form>
-                </div>
-            @endforeach
-        @endif
+            @if($cartItemsBouquets->count())
+                <h2>Букеты</h2>
+                @foreach($cartItemsBouquets as $item)
+                    <div class="cart-item">
+                        <img src="{{ $item->bouquet->image ? asset('storage/' . $item->bouquet->image) : asset('img/placeholder.png') }}"
+                             alt="{{ $item->bouquet->name }}">
+
+                        <div class="item-info">
+                            <h3>{{ $item->bouquet->name }}</h3>
+                            <p class="price">Цена: {{ $item->price }} ₽</p>
+                        </div>
+                        <div class="quantity-control">
+                            <form method="POST" action="{{ route('cart.updateCount', ['type' => 'bouquet', 'id' => $item->id]) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="decrement">
+                                <button type="submit">-</button>
+                            </form>
+
+                            <span>{{ $item->count }}</span>
+
+                            <form method="POST" action="{{ route('cart.updateCount', ['type' => 'bouquet', 'id' => $item->id]) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="increment">
+                                <button type="submit">+</button>
+                            </form>
+                        </div>
+
+                        <form method="POST" action="{{ route('cart.remove', ['type' => 'bouquet', 'id' => $item->id]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button class="remove-btn">Удалить</button>
+                        </form>
+                    </div>
+                @endforeach
+            @endif
+
 
         @if(!$cartItemsFlowers->count() && !$cartItemsPackagings->count())
             <p>Ваша корзина пуста.</p>

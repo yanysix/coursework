@@ -20,7 +20,7 @@
 
         <nav class="nav-link">
             <a href="{{ route('packaging') }}">УПАКОВКИ</a>
-            <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
+            <a href="{{ route('bouquets') }}">БУКЕТЫ</a>
             <a href="{{ route('cart') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
 

@@ -9,8 +9,7 @@ use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ZodiacController;
-
-
+use App\Http\Controllers\BouquetController;
 /*
 |--------------------------------------------------------------------------
 | Публичные страницы
@@ -20,7 +19,7 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::view('/', 'welcome');
     Route::view('/main', 'site.main')->name('main');
     Route::view('/decoration', 'site.decoration')->name('decoration');
-    Route::view('/masterclass', 'site.masterclass')->name('masterclass');
+    Route::get('/bouquets', [BouquetController::class, 'index'])->name('bouquets');
     Route::get('/flower', [FlowerController::class, 'index'])->name('flower');
     Route::get('/packaging', [PackagingController::class, 'index'])->name('packaging');
 });
@@ -75,7 +74,9 @@ Route::prefix('cart')->middleware(['auth', 'throttle:30,1'])->group(function () 
     Route::get('/', [CartController::class, 'index'])->name('cart');
     Route::post('/flower/add', [CartController::class, 'addFlower'])->name('cart.flower.add');
     Route::post('/packaging/add', [CartController::class, 'addPackaging'])->name('cart.packaging.add');
+    Route::post('/bouquet/add', [CartController::class, 'addBouquet'])->name('cart.bouquet.add');
     Route::delete('/remove/{type}/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
+    Route::post('/update-count/{type}/{id}', [CartController::class, 'updateItemCount'])->name('cart.updateCount');
 });
 
 /*
@@ -95,11 +96,15 @@ Route::prefix('cards')->middleware(['auth', 'throttle:30,1'])->group(function ()
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->middleware(['admin', 'throttle:30,1'])->group(function () {
-    Route::get('/flowers', [FlowerController::class, 'admin'])->name('flowers.admin');
+    Route::get('/flowers-list', [FlowerController::class, 'admin'])->name('flowers.admin');
     Route::resource('flowers', FlowerController::class);
 
     Route::get('/packagings', [PackagingController::class, 'admin'])->name('packaging.admin');
     Route::resource('packaging', PackagingController::class);
+
+    Route::get('/bouquets-list', [BouquetController::class, 'admin'])->name('bouquets.admin');
+    Route::resource('bouquets', BouquetController::class);
+
 
     Route::post('/packaging/custom', [PackagingController::class, 'storeCustom'])->name('packaging.custom');
 });

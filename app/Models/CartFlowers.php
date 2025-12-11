@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CartFlowers extends Model
 {
     protected $table = 'cart_flowers';
-    protected $fillable = ['fk_cart_id', 'fk_flower_id', 'price'];
+    protected $fillable = ['fk_cart_id', 'fk_flower_id', 'price', 'count'];
 
     public function flower(): BelongsTo
     {

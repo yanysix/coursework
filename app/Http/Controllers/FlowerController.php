@@ -40,10 +40,9 @@ class FlowerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:flowers,name,' . ($flower->id ?? 'NULL'),
+            'name' => 'required|string|max:255|unique:flowers,name',
             'price' => 'nullable|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
         ], [
             'name.required' => 'Введите название цветка.',
             'name.string' => 'Название должно быть строкой.',
@@ -57,11 +56,10 @@ class FlowerController extends Controller
             'image.mimes' => 'Допустимые форматы: jpeg, png, jpg, gif, webp.',
             'image.max' => 'Размер изображения не должен превышать 2 МБ.',
 
-            'zodiac_sign.in' => 'Выберите корректный знак зодиака.',
         ]);
 
 
-        $data = $request->only('name', 'price', 'zodiac_sign');
+        $data = $request->only('name', 'price');
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('flowers', 'public');
@@ -79,7 +77,6 @@ class FlowerController extends Controller
                     'id' => $flower->id,
                     'name' => $flower->name,
                     'price' => $flower->price,
-                    'zodiac_sign' => $flower->zodiac_sign,
                     'image_url' => $flower->image ? asset('storage/' . $flower->image) : null,
                 ]
             ]);
@@ -97,13 +94,12 @@ class FlowerController extends Controller
     public function update(Request $request, Flower $flower)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:flowers,name,' . $flower->id,
             'price' => 'nullable|numeric',
             'image' => 'nullable|image|max:2048',
-            'zodiac_sign' => 'nullable|string|in:Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец,Козерог,Водолей,Рыбы',
         ]);
 
-        $data = $request->only('name', 'price', 'zodiac_sign');
+        $data = $request->only('name', 'price');
 
         if ($request->hasFile('image')) {
             if ($flower->image) {
@@ -121,7 +117,6 @@ class FlowerController extends Controller
                     'id' => $flower->id,
                     'name' => $flower->name,
                     'price' => $flower->price,
-                    'zodiac_sign' => $flower->zodiac_sign,
                     'image_url' => $flower->image ? asset('storage/' . $flower->image) : null,
                 ]
             ]);
@@ -129,6 +124,7 @@ class FlowerController extends Controller
 
         return redirect()->route('admin.flowers.admin')->with('success', 'Цветок успешно обновлен!');
     }
+
 
     public function destroy(Flower $flower)
     {

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CartPackagings extends Model
 {
     protected $table = 'cart_packagings';
-    protected $fillable = ['fk_cart_id', 'fk_packaging_id', 'price'];
+    protected $fillable = ['fk_cart_id', 'fk_packaging_id', 'price', 'count'];
 
     public function packaging(): BelongsTo
     {

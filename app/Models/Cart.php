@@ -29,4 +29,9 @@ class Cart extends Model
     {
         return $this->hasMany(CartPackagings::class, 'fk_cart_id');
     }
+
+    public function bouquets()
+    {
+        return $this->hasMany(CartBouquet::class, 'fk_cart_id');
+    }
 }

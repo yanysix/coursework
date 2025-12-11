@@ -9,7 +9,7 @@ class Packaging extends Model
 {
     protected $table = 'packaging';
 
-    protected $fillable = ['name', 'price', 'image', 'zodiac_sign'];
+    protected $fillable = ['name', 'price', 'image'];
 
     public function bouquets(): HasMany
     {

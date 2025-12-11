@@ -17,6 +17,7 @@
             <ul>
                 <li><a href="{{ route('admin.flowers.admin') }}">Цветы</a></li>
                 <li><a href="{{ route('admin.packaging.admin') }}">Упаковка</a></li>
+                <li><a href="{{ route('admin.bouquets.admin') }}">Букеты</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

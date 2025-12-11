@@ -1,8 +1,7 @@
-document.addEventListener("DOMContentLoaded", function () {
-
+document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("packaging-modal");
     const openBtn = document.getElementById("show-add-packaging");
-    const closeBtn = document.querySelector("#packaging-modal .close");
+    const closeBtn = modal.querySelector(".close");
     const form = document.getElementById("packaging-form");
 
     const packagingIdInput = document.getElementById("packaging-id");
@@ -10,74 +9,64 @@ document.addEventListener("DOMContentLoaded", function () {
     const priceInput = document.getElementById("price");
     const imageInput = document.getElementById("image");
     const currentImage = document.getElementById("current-image");
-
     const modalTitle = document.getElementById("modal-title");
-    const saveButton = document.getElementById("save-packaging");
 
     const storeUrl = form.dataset.storeUrl;
 
-
-    // Открытие модалки (добавление)
-    openBtn.addEventListener("click", function () {
-        modal.style.display = "block";
-
-        modalTitle.textContent = "Добавить упаковку";
-        saveButton.textContent = "Добавить";
-
-        form.action = storeUrl;
-        form.method = "POST";
-
-        packagingIdInput.value = "";
-        nameInput.value = "";
-        priceInput.value = "";
-        imageInput.value = "";
+    const openModal = (card = null, updateUrl = null) => {
+        form.reset();
         currentImage.innerHTML = "";
-    });
 
+        if (card && updateUrl) {
+            // Редактирование
+            modalTitle.textContent = "Редактировать упаковку";
+            form.action = updateUrl;
+            form.method = "POST";
 
-    // -----------------------------
-    // Закрытие модалки
-    // -----------------------------
-    closeBtn.addEventListener("click", function () {
-        modal.style.display = "none";
-    });
+            // Добавляем скрытое поле _method=PUT
+            if (!form.querySelector('input[name="_method"]')) {
+                const methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'PUT';
+                form.appendChild(methodInput);
+            }
 
-    window.addEventListener("click", function (e) {
-        if (e.target === modal) {
-            modal.style.display = "none";
+            packagingIdInput.value = card.dataset.id;
+            nameInput.value = card.querySelector("h3").textContent;
+            priceInput.value = card.querySelector(".price").textContent.replace("₽", "").trim();
+
+            const imgTag = card.querySelector("img");
+            if (imgTag) {
+                currentImage.innerHTML = `<img src="${imgTag.src}" width="120" style="margin-bottom:10px;border-radius:6px;">`;
+            }
+        } else {
+            // Добавление
+            modalTitle.textContent = "Добавить упаковку";
+            form.action = storeUrl;
+            const methodInput = form.querySelector('input[name="_method"]');
+            if (methodInput) methodInput.remove();
+            packagingIdInput.value = "";
         }
+
+        modal.style.display = "block";
+    };
+
+    // Кнопка "Добавить"
+    openBtn.addEventListener("click", () => openModal());
+
+    // Закрытие модалки
+    closeBtn.addEventListener("click", () => modal.style.display = "none");
+    window.addEventListener("click", e => {
+        if (e.target === modal) modal.style.display = "none";
     });
 
-
-    // -----------------------------
-    // Редактирование упаковки
-    // -----------------------------
-    document.querySelectorAll(".edit-packaging").forEach(button => {
-        button.addEventListener("click", function () {
-
-            const card = this.closest(".card");
-            const id = card.dataset.id;
-
-            fetch(`/admin/packaging/${id}/edit`)
-                .then(res => res.json())
-                .then(data => {
-                    modal.style.display = "block";
-
-                    modalTitle.textContent = "Редактировать упаковку";
-                    saveButton.textContent = "Сохранить изменения";
-
-                    form.action = `/admin/packaging/${id}`;
-                    form.method = "POST";
-
-                    packagingIdInput.value = data.id;
-                    nameInput.value = data.name;
-                    priceInput.value = data.price ?? "";
-
-                    currentImage.innerHTML = data.image_url
-                        ? `<img src="${data.image_url}" width="120" style="margin-bottom:10px;border-radius:6px;">`
-                        : "";
-                });
+    // Кнопки "Редактировать"
+    document.querySelectorAll(".edit-packaging").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest(".card");
+            const updateUrl = btn.dataset.updateUrl; // URL обновления из кнопки
+            openModal(card, updateUrl);
         });
     });
-
 });

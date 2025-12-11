@@ -22,7 +22,7 @@
 
         <nav class="nav-link">
             <a href="{{ route('packaging') }}">УПАКОВКИ</a>
-            <a href="{{ route('masterclass') }}">МАСТЕР КЛАССЫ</a>
+            <a href="{{ route('bouquets') }}">БУКЕТЫ</a>
             <a href="{{ route('cart') }}"><img src="{{ asset('img/bag.png') }}" class="bag" alt="Корзина"></a>
 
             <div class="profile-dropdown">
@@ -54,61 +54,43 @@
     </h1>
 
     <div class="zodiac-result-cards">
-        <div class="zodiac-card">
-            <h2>Идеальный цветок</h2>
+        @if($bouquet)
+            <div class="zodiac-card">
+                <h2>Идеальный букет</h2>
 
-            @if($flower->image)
-                <img src="{{ asset('storage/' . $flower->image) }}" class="zodiac-image">
-            @endif
+                @if($bouquet->image)
+                    <img src="{{ asset('storage/' . $bouquet->image) }}" class="zodiac-image" alt="{{ $bouquet->name }}">
+                @endif
 
-            <h3>{{ $flower->name }}</h3>
-            <p class="price">Цена: {{ $flower->price }} ₽</p>
+                <h3>{{ $bouquet->name }}</h3>
+                <p class="price">Цена: {{ $bouquet->price }} ₽</p>
 
-            @auth
-                <form action="{{ route('cart.flower.add') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="flower_id" value="{{ $flower->id }}">
-                    <input type="hidden" name="price" value="{{ $flower->price }}">
-                    <button class="cta-button">Добавить в корзину</button>
-                </form>
-            @else
-                <a href="{{ route('auth') }}" class="cta-button" style="background:#bbb;">
-                    Войдите, чтобы добавить
-                </a>
-            @endauth
-        </div>
-        <div class="zodiac-card">
-            <h2>Идеальная упаковка</h2>
-
-            @if($packaging->image)
-                <img src="{{ asset('storage/' . $packaging->image) }}" class="zodiac-image">
-            @endif
-
-            <h3>{{ $packaging->name }}</h3>
-            <p class="price">Цена: {{ $packaging->price }} ₽</p>
-
-            <form action="{{ route('cart.packaging.add') }}" method="POST">
-                @csrf
-                <input type="hidden" name="packaging_id" value="{{ $packaging->id }}">
-                <input type="hidden" name="price" value="{{ $packaging->price }}">
                 @auth
-                    <button class="cta-button">Добавить в корзину</button>
+                    <form action="{{ route('cart.bouquet.add') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="bouquet_id" value="{{ $bouquet->id }}">
+                        <input type="hidden" name="price" value="{{ $bouquet->price }}">
+                        <div class="quantity-wrapper">
+                            <button type="button" class="qty-btn" onclick="this.nextElementSibling.stepDown()">-</button>
+                            <input type="number" name="count" value="1" min="1" class="quantity-input">
+                            <button type="button" class="qty-btn" onclick="this.previousElementSibling.stepUp()">+</button>
+                        </div>
+                        <button type="submit" class="cta-button">Добавить в корзину</button>
+                    </form>
                 @else
                     <a href="{{ route('auth') }}" class="cta-button" style="background:#bbb;">
                         Войдите, чтобы добавить
                     </a>
                 @endauth
-            </form>
-        </div>
-
+            </div>
+        @else
+            <p>Букет для вашего знака Зодиака пока не найден.</p>
+        @endif
     </div>
-
     <div class="zodiac-back">
         <a href="{{ route('zodiac.index') }}" class="cta-button back-btn">Выбрать дату заново</a>
     </div>
-
 </div>
-
 <footer class="container7">
     <div class="container8">
         <div class="logo-contact-column">

@@ -10,7 +10,7 @@ class Flower extends Model
 {
     protected $table = 'flowers';
 
-    protected $fillable = ['name', 'price', 'image', 'zodiac_sign'];
+    protected $fillable = ['name', 'price', 'image', 'count'];
 
 
     public function bouquets(): BelongsToMany

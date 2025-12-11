@@ -141,3 +141,35 @@
     0% { opacity: 1; }
     100% { opacity: 0; }
 }
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-control button {
+    width: 32px;
+    height: 32px;
+    background: #dd4f69;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-control button:hover {
+    background: #c53e58;
+}
+
+.quantity-control span {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+}

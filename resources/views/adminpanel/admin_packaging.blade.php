@@ -7,6 +7,7 @@
         <button id="show-add-packaging" class="btn btn-primary">Добавить упаковку</button>
     </div>
 
+    <!-- Модалка Добавить / Редактировать -->
     <div id="packaging-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -14,10 +15,8 @@
 
             <div id="current-image" style="margin-bottom:10px;"></div>
 
-            <form id="packaging-form" method="POST" enctype="multipart/form-data"
-                  data-store-url="{{ route('admin.packaging.store') }}">
-
-                @csrf
+            <form id="packaging-form" method="POST" enctype="multipart/form-data" data-store-url="{{ route('admin.packaging.store') }}">
+            @csrf
                 <input type="hidden" id="packaging-id" name="packaging_id">
 
                 <div class="form-group">
@@ -31,25 +30,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="zodiac_sign">Знак зодиака (необязательно)</label>
-                    <select id="zodiac_sign" name="zodiac_sign">
-                        <option value="">— Без привязки —</option>
-                        <option value="Овен">Овен</option>
-                        <option value="Телец">Телец</option>
-                        <option value="Близнецы">Близнецы</option>
-                        <option value="Рак">Рак</option>
-                        <option value="Лев">Лев</option>
-                        <option value="Дева">Дева</option>
-                        <option value="Весы">Весы</option>
-                        <option value="Скорпион">Скорпион</option>
-                        <option value="Стрелец">Стрелец</option>
-                        <option value="Козерог">Козерог</option>
-                        <option value="Водолей">Водолей</option>
-                        <option value="Рыбы">Рыбы</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
                     <label for="image">Изображение</label>
                     <input type="file" id="image" name="image" accept="image/*">
                 </div>
@@ -59,26 +39,28 @@
         </div>
     </div>
 
+    <!-- Карточки упаковок -->
     <div class="cards-container">
         @forelse($packagings as $package)
             <div class="card" data-id="{{ $package->id }}">
                 <h3>{{ $package->name }}</h3>
+                <p class="price">{{ $package->price ? $package->price . ' ₽' : '-' }}</p>
 
                 @if($package->image)
-                    <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->name }}" class="flower-image">
+                    <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->name }}" style="max-width:120px; margin-bottom:10px; border-radius:6px;">
                 @endif
-                <p>Знак: {{ $package->zodiac_sign ?? '—' }}</p>
-                <p class="price">{{ $package->price ? $package->price.' ₽' : '-' }}</p>
 
                 <div class="card-actions">
-                    <button class="btn btn-warning edit-packaging">Редактировать</button>
+                    <button class="btn btn-warning edit-packaging"
+                            data-update-url="{{ route('admin.packaging.update', $package->id) }}">
+                        Редактировать
+                    </button>
 
-                    <form action="{{ route('admin.packaging.destroy', $package->id) }}"
-                          method="POST" class="inline-form">
+
+                    <form action="{{ route('admin.packaging.destroy', $package->id) }}" method="POST" class="inline-form" onsubmit="return confirm('Удалить упаковку?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('Удалить упаковку?')">Удалить</button>
+                        <button type="submit" class="btn btn-danger">Удалить</button>
                     </form>
                 </div>
             </div>
